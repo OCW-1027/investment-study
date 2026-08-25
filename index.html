@@ -37,7 +37,10 @@
 *{box-sizing:border-box; margin:0; padding:0}
 body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans KR',-apple-system,'Hiragino Sans','Noto Sans KR',sans-serif; line-height:1.65; font-size:15.5px; -webkit-font-smoothing:antialiased}
 .wrap{max-width:960px; margin:0 auto; padding:0 20px 90px}
-header.hero{padding:44px 0 20px; border-bottom:1px solid var(--line)}
+header.hero{padding:44px 0 20px; border-bottom:1px solid var(--line); position:relative}
+.langlink{position:absolute; top:22px; right:0; font-size:12.5px}
+.langlink a{color:var(--muted); text-decoration:none; border:1px solid var(--line); border-radius:999px; padding:4px 12px}
+.langlink a:hover{color:var(--accent); border-color:var(--accent)}
 .hero .kicker{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; margin-bottom:10px}
 .hero h1{font-family:'Gowun Batang',serif; font-weight:700; font-size:clamp(30px,5vw,42px); letter-spacing:-.01em; text-wrap:balance}
 .hero h1 .jp{color:var(--muted); font-size:.55em; font-weight:400; margin-left:.5em; letter-spacing:.08em}
@@ -216,6 +219,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
 
 <div class="wrap">
 <header class="hero">
+  <div class="langlink"><a href="https://ocw-1027.github.io/investment-study/jp.html">일본어판 →</a></div>
   <div class="kicker">Input → Association → Judgment → Invest</div>
   <h1>연상 사고 개발</h1>
   <p class="sub">뉴스 하나가 들어오면 자산 전체에 화살표가 자동으로 그려지는 상태를 만드는 훈련장.
@@ -270,7 +274,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
 
   <div class="cmdh"><span class="cn">01</span><span class="ct">선물의 문법 — 모든 상품의 공통 구조</span></div>
   <div class="mapgrid">
-    <details class="mcard"><summary><span class="mico">期先</span><span class="mtitle">콘탱고 / 백워데이션</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">곡선</span><span class="mtitle">콘탱고 / 백워데이션</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">구조</span><ul>
           <li><b>콘탱고</b>: 원월물 &gt; 근월물 — 재고가 넉넉하고 보관비가 반영된 "평상시" 곡선. 만기마다 비싼 다음 월물로 갈아타므로 <b>롤오버 비용</b>이 샌다</li>
@@ -280,7 +284,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>백워데이션 전환은 수급 타이트의 강한 증거 — 곡선의 "모양"이 뉴스보다 정직하다</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>2020년 유가 회복기에 원유 ETF가 현물 반등을 못 따라간 이유가 콘탱고 롤비용. 상품의 방향과 그릇(vehicle)의 손익은 다르다.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">建玉</span><span class="mtitle">COT 리포트 — 포지션의 극단</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">포지션</span><span class="mtitle">COT 리포트 — 포지션의 극단</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">읽는 법</span><ul>
           <li>CFTC가 매주 공개 (JST 토요일 새벽). 투기꾼(Non-commercial)과 실수요 헤저(Commercial)의 포지션</li>
@@ -290,7 +294,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>포지션 극단 + 시즌 전환점이 겹치면 반전 확률이 커진다</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>극단은 "언제"를 말해주지 않는다 — 극단인 채로 몇 달 갈 수 있다. 방향 근거가 아니라 리스크 관리(포지션 축소) 신호로 쓸 것.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">季節</span><span class="mtitle">시즌널리티</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">계절</span><span class="mtitle">시즌널리티</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">대표 패턴</span><ul>
           <li>천연가스: 겨울 난방(11~3월)·여름 냉방 수요, 4~10월은 재고 주입기</li>
@@ -298,7 +302,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>금: 인도 결혼·축제 시즌(9~11월), 중국 춘절 전 실물 수요</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>시즌널리티는 "평년"의 이야기 — 그 해의 수급 쇼크(한파·전쟁·감산)가 계절성을 압도한다. 배경 리듬으로만 쓸 것.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">需給</span><span class="mtitle">실물 수급 vs 금융 수급</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">수급</span><span class="mtitle">실물 수급 vs 금융 수급</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">두 개의 시장</span><ul>
           <li>실물: 생산·재고·소비 — 천천히 움직이는 바닥의 조류</li>
@@ -313,7 +317,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
   <div class="cmdh"><span class="cn">02</span><span class="ct">천연가스 — CFD 실전 심화</span></div>
   <p class="cmdlede">별명 "위도우메이커(과부 제조기)" — 상품 중 최고 수준의 변동성. 방향보다 포지션 사이징이 생사를 가른다.</p>
   <div class="mapgrid">
-    <details class="mcard"><summary><span class="mico">天気</span><span class="mtitle">날씨가 왕 — HDD/CDD</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">날씨</span><span class="mtitle">날씨가 왕 — HDD/CDD</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">기본 사슬</span><ul>
           <li>한파 예보 → 난방도일(HDD) ↑ → 가스 수요 ↑ → 재고 인출 가속 → 가격 <b class="updn u">▲</b></li>
@@ -323,7 +327,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>예보는 아직 실현되지 않은 수요 → 예보가 온화해지는 순간 프리미엄은 즉시 소멸 (지정학 프리미엄과 같은 문법)</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>"한파가 왔다"는 뉴스가 나온 시점엔 이미 예보 단계에서 가격에 다 반영된 경우가 대부분 — 뉴스가 아니라 예보 사이클을 봐야 한다.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">在庫</span><span class="mtitle">EIA 주간 재고 — 매주의 승부처</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">재고</span><span class="mtitle">EIA 주간 재고 — 매주의 승부처</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">읽는 법</span><ul>
           <li>매주 목요일 밤(JST 23:30, 겨울 00:30) 발표 — 예상치 대비 서프라이즈로 급변동</li>
@@ -343,7 +347,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>INPEX(1605)는 LNG 프로젝트 보유 — 가스 가격의 수혜 방향</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>"천연가스 상승"이라는 뭉뚱그린 연상은 틀린다 — 반드시 어느 허브 가격인지부터 확인. 라쿠텐 CFD의 천연가스는 헨리허브(NYMEX) 기준.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">危機</span><span class="mtitle">위도우메이커의 리스크 관리</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">리스크</span><span class="mtitle">위도우메이커의 리스크 관리</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">왜 위험한가</span><ul>
           <li>하루 ±10%가 드물지 않다 — 레버리지 CFD에선 순식간에 강제청산 영역</li>
@@ -357,7 +361,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
 
   <div class="cmdh"><span class="cn">03</span><span class="ct">금·은 심화</span></div>
   <div class="mapgrid">
-    <details class="mcard"><summary><span class="mico">実質</span><span class="mtitle">금의 3층 구조 — 무엇이 금값을 정하나</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">금리</span><span class="mtitle">금의 3층 구조 — 무엇이 금값을 정하나</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">3개의 드라이버 (우선순위는 국면마다 교체)</span><ul>
           <li>① 실질금리: 10년 TIPS 금리와 역상관 — 평시의 교과서 (FRED에서 확인)</li>
@@ -368,7 +372,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>관련주: 스미토모금속광산(5713·금 채굴), 아사히홀딩스(5857·귀금속 리사이클)</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>"금리↑=금↓" 교과서만 믿으면 2024~26 랠리를 통째로 놓친다 — 지금 어느 층이 지배적인지 매번 확인 (③의 리플레이 케이스 참조).</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">鉱山</span><span class="mtitle">금광주 — 레버리지의 명암</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">광산</span><span class="mtitle">금광주 — 레버리지의 명암</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">레버리지 구조</span><ul>
           <li>채굴원가(AISC)는 거의 고정 → 금값 상승분이 이익에 증폭 반영 — 금 +20%가 이익 +50%가 되는 구조</li></ul></div>
@@ -377,7 +381,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>개별 광산 리스크(사고·국유화·품위 저하)는 금과 무관한 하락 요인</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>금광주는 "금 + 주식시장 베타" — 주식 전체가 폭락하는 날엔 금이 올라도 금광주는 같이 팔린다.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">金銀比</span><span class="mtitle">금은비와 실버의 수급</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">금은비</span><span class="mtitle">금은비와 실버의 수급</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">금은비 (Gold/Silver Ratio)</span><ul>
           <li>역사 레인지 대략 45~125 — 80 초과는 실버 상대 저평가 신호로 자주 기능</li>
@@ -402,7 +406,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
           <li>유가 하한 방어 실패 = 카르텔 균열 신호 → 점유율 전쟁(2014, 2020)이면 폭락 사슬</li></ul></div>
         <div class="mrow"><span class="mlab trap">함정</span><div>수요 붕괴로 내리는 유가(침체)와 공급 증가로 내리는 유가는 주식에 정반대 — 하락의 "원인"이 연상의 출발점.</div></div>
       </div></details>
-    <details class="mcard"><summary><span class="mico">精製</span><span class="mtitle">크랙 스프레드와 관련주 지도</span><span class="mchev">›</span></summary>
+    <details class="mcard"><summary><span class="mico">정제</span><span class="mtitle">크랙 스프레드와 관련주 지도</span><span class="mchev">›</span></summary>
       <div class="mbody">
         <div class="mrow"><span class="mlab l1">사슬 지도</span><ul>
           <li>원유고 → 상류(탐사·생산): INPEX(1605) <b class="updn u">▲</b>, 종합상사 <b class="updn u">▲</b></li>
@@ -551,16 +555,16 @@ brender();
 
 /* ---------- 연상 지도 ---------- */
 const MAP=[
- {ico:'金利',t:'미국 금리 ↑ (Fed 긴축)',l1:['달러 <b class="updn u">▲</b> / 엔 <b class="updn d">▼</b> (금리차 확대)','고PER 성장주·IT <b class="updn d">▼</b> (할인율 상승)','가치주·은행 상대적 <b class="updn u">▲</b>'],l2:['엔저 → 일본 수출주 <b class="updn u">▲</b>','금 <b class="updn d">▼</b> (기회비용 상승), 신흥국 자금 유출','리츠·부동산 <b class="updn d">▼</b> (조달비용)'],trap:'인상 "종료 시사"가 나오는 순간 모든 화살표가 반전된다. 수준이 아니라 방향 전환을 보라.'},
+ {ico:'금리',t:'미국 금리 ↑ (Fed 긴축)',l1:['달러 <b class="updn u">▲</b> / 엔 <b class="updn d">▼</b> (금리차 확대)','고PER 성장주·IT <b class="updn d">▼</b> (할인율 상승)','가치주·은행 상대적 <b class="updn u">▲</b>'],l2:['엔저 → 일본 수출주 <b class="updn u">▲</b>','금 <b class="updn d">▼</b> (기회비용 상승), 신흥국 자금 유출','리츠·부동산 <b class="updn d">▼</b> (조달비용)'],trap:'인상 "종료 시사"가 나오는 순간 모든 화살표가 반전된다. 수준이 아니라 방향 전환을 보라.'},
  {ico:'BOJ',t:'일본 금리 ↑ (BOJ 정상화)',l1:['엔 <b class="updn u">▲</b> 압력','은행·보험 <b class="updn u">▲</b> (예대마진·운용이익)','리츠·부동산 <b class="updn d">▼</b>, 고배당주 매력 저하'],l2:['엔고 → 수출주 <b class="updn d">▼</b> → 닛케이 단기 압박','엔캐리 청산 트리거 → 글로벌 위험자산 <b class="updn d">▼</b>'],trap:'2024.3처럼 "이미 반영 + 완화적 가이던스"면 엔은 오히려 약세. 서프라이즈의 크기가 방향을 정한다.'},
- {ico:'円安',t:'엔저 진행',l1:['수출주(자동차·기계) <b class="updn u">▲</b>','인바운드(백화점·철도·호텔) <b class="updn u">▲</b>','해외자산 엔화 환산익 <b class="updn u">▲</b>'],l2:['수입물가 ↑ → 내수 식품·전력 마진 <b class="updn d">▼</b>','실질임금 ↓ → 소비 압박','물가 ↑ → BOJ 인상 압력 → 은행주 (3차)','재무성 구두개입 → 실개입 리스크'],trap:'150엔 부근부터는 "개입 경계"가 사슬에 들어간다. 엔저 수혜 연상은 개입 리스크와 세트.'},
- {ico:'原油',t:'유가 ↑',l1:['에너지·종합상사 <b class="updn u">▲</b>','항공·해운·운수 비용 <b class="updn d">▼</b>(마진)','인플레 기대 ↑ → 금리 ↑'],l2:['일본 무역수지 악화 → 엔저 요인','전력·가스요금 ↑ → 소비 압박','재생에너지·원전 재가동 테마 <b class="updn u">▲</b>'],trap:'"수요가 강해서 오르는 유가"는 경기 호조 신호, "공급 쇼크 유가"는 스태그플레이션 신호. 원인이 다르면 주식의 방향도 다르다.'},
- {ico:'物価',t:'인플레이션 ↑',l1:['중앙은행 긴축 → 금리 ↑','실물자산(부동산·금·원자재) <b class="updn u">▲</b>','채권 <b class="updn d">▼</b>'],l2:['가격전가 가능 기업 <b class="updn u">▲</b> / 불가 기업 <b class="updn d">▼</b> — 같은 업종 안에서 갈린다','임금 ↑ → 인건비 비중 큰 내수 서비스 <b class="updn d">▼</b>'],trap:'디스인플레 전환(CPI 하회)이 확인되는 순간, 그동안의 승자와 패자가 통째로 바뀐다.'},
+ {ico:'엔저',t:'엔저 진행',l1:['수출주(자동차·기계) <b class="updn u">▲</b>','인바운드(백화점·철도·호텔) <b class="updn u">▲</b>','해외자산 엔화 환산익 <b class="updn u">▲</b>'],l2:['수입물가 ↑ → 내수 식품·전력 마진 <b class="updn d">▼</b>','실질임금 ↓ → 소비 압박','물가 ↑ → BOJ 인상 압력 → 은행주 (3차)','재무성 구두개입 → 실개입 리스크'],trap:'150엔 부근부터는 "개입 경계"가 사슬에 들어간다. 엔저 수혜 연상은 개입 리스크와 세트.'},
+ {ico:'유가',t:'유가 ↑',l1:['에너지·종합상사 <b class="updn u">▲</b>','항공·해운·운수 비용 <b class="updn d">▼</b>(마진)','인플레 기대 ↑ → 금리 ↑'],l2:['일본 무역수지 악화 → 엔저 요인','전력·가스요금 ↑ → 소비 압박','재생에너지·원전 재가동 테마 <b class="updn u">▲</b>'],trap:'"수요가 강해서 오르는 유가"는 경기 호조 신호, "공급 쇼크 유가"는 스태그플레이션 신호. 원인이 다르면 주식의 방향도 다르다.'},
+ {ico:'물가',t:'인플레이션 ↑',l1:['중앙은행 긴축 → 금리 ↑','실물자산(부동산·금·원자재) <b class="updn u">▲</b>','채권 <b class="updn d">▼</b>'],l2:['가격전가 가능 기업 <b class="updn u">▲</b> / 불가 기업 <b class="updn d">▼</b> — 같은 업종 안에서 갈린다','임금 ↑ → 인건비 비중 큰 내수 서비스 <b class="updn d">▼</b>'],trap:'디스인플레 전환(CPI 하회)이 확인되는 순간, 그동안의 승자와 패자가 통째로 바뀐다.'},
  {ico:'VIX',t:'VIX 급등 · 수급 쇼크',l1:['리스크패리티·CTA 기계적 매도 → 선물 주도 <b class="updn d">▼</b>','우량주까지 무차별 하락 (펀더멘털 무관)'],l2:['레버리지 청산이 끝나면 급반등 — 2024.8.5 닛케이 -12.4% → 다음날 +10.2%','변동성 진정(VIX 하락 전환)이 되돌림 매수 신호'],trap:'수급발 폭락에서 손절과 신규 진입을 혼동하지 말 것. CFD는 청산 소용돌이에 휘말리기 가장 쉬운 자리다.'},
- {ico:'景気',t:'경기침체 신호',l1:['경기민감주(기계·화학·해운) <b class="updn d">▼</b>','디펜시브(식품·의약·통신) 상대적 <b class="updn u">▲</b>','금리인하 기대 → 채권 <b class="updn u">▲</b>'],l2:['"나쁜 뉴스=금리인하 기대=주가 상승" 국면과 "나쁜 뉴스=실적 붕괴=하락" 국면을 구분','장단기금리 역전 해소(스티프닝)가 오히려 침체 직전 신호였던 사례 다수'],trap:'금리인하 자체는 호재가 아니다. "왜 내리는가"가 예방적이면 ▲, 침체 대응이면 ▼.'},
- {ico:'半導体',t:'AI · 반도체 사이클',l1:['AI 투자 ↑ → GPU·HBM 수요 ↑','장비(도쿄일렉트론·아드반테스트·디스코) <b class="updn u">▲</b>','소재(신에츠화학·SUMCO) <b class="updn u">▲</b>'],l2:['데이터센터 전력 수요 ↑ → 전선(후루카와·스미토모전공)·변압기·전력주 (사슬 하류, 늦게 움직인다)','마이크로볼마운터 등 후공정 실장 장비도 HBM 적층 수요의 연장선'],trap:'사이클 산업 — 발주 잔고·메모리 가격이 꺾이는 신호가 나오면 사슬 전체가 역회전한다.'},
- {ico:'中国',t:'중국 경기부양 · 회복',l1:['중국 노출 일본주(코마츠·화낙·시세이도·무라타) <b class="updn u">▲</b>','원자재(구리·철광석) <b class="updn u">▲</b>, 호주달러 <b class="updn u">▲</b>'],l2:['인바운드 소비(면세) <b class="updn u">▲</b>','과잉생산 수출 → 철강·화학은 오히려 <b class="updn d">▼</b> 압박일 수도'],trap:'부양책 "발표"에 급등 → 규모 실망에 반락하는 패턴 반복. 발표와 집행을 구분하라.'},
- {ico:'地政学',t:'지정학 리스크',l1:['유가·금 <b class="updn u">▲</b>','방위관련(미쓰비시중공 등) <b class="updn u">▲</b>','리스크오프 → 주식 <b class="updn d">▼</b>·채권 <b class="updn u">▲</b>'],l2:['공급망 재편 → 국내회귀·우방국 생산 수혜주','해운 운임 ↑ (항로 우회) → 해운주 <b class="updn u">▲</b>'],trap:'엔은 과거 "안전통화"였지만 최근엔 유사시 엔고 반응이 약해졌다. 오래된 연상을 그대로 쓰지 말 것.'},
+ {ico:'경기',t:'경기침체 신호',l1:['경기민감주(기계·화학·해운) <b class="updn d">▼</b>','디펜시브(식품·의약·통신) 상대적 <b class="updn u">▲</b>','금리인하 기대 → 채권 <b class="updn u">▲</b>'],l2:['"나쁜 뉴스=금리인하 기대=주가 상승" 국면과 "나쁜 뉴스=실적 붕괴=하락" 국면을 구분','장단기금리 역전 해소(스티프닝)가 오히려 침체 직전 신호였던 사례 다수'],trap:'금리인하 자체는 호재가 아니다. "왜 내리는가"가 예방적이면 ▲, 침체 대응이면 ▼.'},
+ {ico:'반도체',t:'AI · 반도체 사이클',l1:['AI 투자 ↑ → GPU·HBM 수요 ↑','장비(도쿄일렉트론·아드반테스트·디스코) <b class="updn u">▲</b>','소재(신에츠화학·SUMCO) <b class="updn u">▲</b>'],l2:['데이터센터 전력 수요 ↑ → 전선(후루카와·스미토모전공)·변압기·전력주 (사슬 하류, 늦게 움직인다)','마이크로볼마운터 등 후공정 실장 장비도 HBM 적층 수요의 연장선'],trap:'사이클 산업 — 발주 잔고·메모리 가격이 꺾이는 신호가 나오면 사슬 전체가 역회전한다.'},
+ {ico:'중국',t:'중국 경기부양 · 회복',l1:['중국 노출 일본주(코마츠·화낙·시세이도·무라타) <b class="updn u">▲</b>','원자재(구리·철광석) <b class="updn u">▲</b>, 호주달러 <b class="updn u">▲</b>'],l2:['인바운드 소비(면세) <b class="updn u">▲</b>','과잉생산 수출 → 철강·화학은 오히려 <b class="updn d">▼</b> 압박일 수도'],trap:'부양책 "발표"에 급등 → 규모 실망에 반락하는 패턴 반복. 발표와 집행을 구분하라.'},
+ {ico:'지정학',t:'지정학 리스크',l1:['유가·금 <b class="updn u">▲</b>','방위관련(미쓰비시중공 등) <b class="updn u">▲</b>','리스크오프 → 주식 <b class="updn d">▼</b>·채권 <b class="updn u">▲</b>'],l2:['공급망 재편 → 국내회귀·우방국 생산 수혜주','해운 운임 ↑ (항로 우회) → 해운주 <b class="updn u">▲</b>'],trap:'엔은 과거 "안전통화"였지만 최근엔 유사시 엔고 반응이 약해졌다. 오래된 연상을 그대로 쓰지 말 것.'},
  {ico:'DXY',t:'달러 인덱스 ↑ (달러고)',l1:['달러표시 커머디티(금·원유·실버) <b class="updn d">▼</b> 압력 — 타 통화 보유자에게 비싸진다','신흥국 달러부채 부담 ↑ → 신흥국 주식·통화 <b class="updn d">▼</b>','엔저 → 일본 수출주 <b class="updn u">▲</b>'],l2:['미 다국적기업 해외이익 환산 <b class="updn d">▼</b> — 애플·MS 실적의 숨은 역풍','자원국 통화(호주달러·브라질 헤알) <b class="updn d">▼</b>','달러 피크아웃 확인 → 눌려 있던 커머디티의 매수 타이밍 (에모리식 역발상)'],trap:'평시의 "달러↑=금↓"은 위기 국면에서 깨진다 — 리스크오프에선 달러와 금이 동시에 피난처가 되어 함께 오른다.'},
  {ico:'GOLD',t:'금 — 무국적 통화',l1:['실질금리 ↓ → 금 <b class="updn u">▲</b> (무이자 자산의 기회비용 감소)','달러 <b class="updn d">▼</b> → 금 <b class="updn u">▲</b>','지정학 리스크 → 금 <b class="updn u">▲</b>'],l2:['중앙은행 매수(탈달러) → 금리와 무관한 구조적 매수 — 2022 러시아 제재 이후 가속','금 <b class="updn u">▲</b> → 금광주(스미토모금속광산 5713, 뉴몬트·배릭)는 레버리지로 더 크게','국내 엔화 금값 = 달러 금값 × 환율 — 엔저와 겹치면 이중 상승 → 귀금속·리사이클 관련주','미 재정불안(부채 40조 달러) → "채권보다 금" — 채권 이탈 자금의 수혜'],trap:'교과서는 "금리↑=금↓"이지만 2024~26년은 고금리에도 사상최고 — 중앙은행 매수·재정 신인도 저하가 교과서를 이겼다. 지금 지배적인 드라이버가 무엇인지 매번 물을 것.'},
  {ico:'OIL',t:'원유 — 공급과 수요의 줄다리기',l1:['공급 쇼크(OPEC+ 감산·중동) → 유가 <b class="updn u">▲</b> → INPEX(1605)·종합상사 <b class="updn u">▲</b>','항공(9201·9202)·운수 연료비 ↑ → 마진 <b class="updn d">▼</b>','인플레 기대 ↑ → 금리 상승 압력'],l2:['일본 무역수지 악화 → 엔저 요인','전력·가스 원가 ↑ → 요금 인상 → 소비 압박','고유가 지속 → 재생에너지·원전 재가동 테마 <b class="updn u">▲</b>'],trap:'"수요 붕괴로 내리는 유가"(침체 신호)와 "공급 완화로 내리는 유가"(호재)는 주식에 정반대. 그리고 지정학 프리미엄은 사건이 일상화되면 급속히 소멸한다 — 2022년 유가가 그랬다.'},
@@ -623,7 +627,7 @@ l1el.innerHTML=L1.map((q,qi)=>{
     <div class="qhead"><span class="qnum">DRILL ${String(qi+1).padStart(2,'0')}</span><span class="qtitle">${q.t}</span><span class="qtag">${q.tag}</span></div>
     <div class="chain">${nodes}</div>${blanks}
     <button class="ghost" data-ex="${qi}">해설 보기</button>
-    <div class="explain" id="ex${qi}"><div class="exlabel">解説 — 왜 이렇게 연결되는가</div><p>${q.ex}</p></div>
+    <div class="explain" id="ex${qi}"><div class="exlabel">해설 — 왜 이렇게 연결되는가</div><p>${q.ex}</p></div>
   </div>`;
 }).join('');
 function bidx(q,ni){let k=0; for(let i=0;i<=ni;i++){if(typeof q.chain[i]==='object')k++;} return k;}
@@ -761,7 +765,7 @@ l2el.addEventListener('click',e=>{
       v.classList.add('show');
     });
     const s=document.getElementById(`s${qi}`);
-    s.textContent=`SCORE ${score} / ${L2[qi].a.length}` + (score===L2[qi].a.length?'  — 完璧':'  — 불일치 항목의 "이유"를 소리 내어 설명해 볼 것');
+    s.textContent=`SCORE ${score} / ${L2[qi].a.length}` + (score===L2[qi].a.length?'  — 완벽':'  — 불일치 항목의 "이유"를 소리 내어 설명해 볼 것');
     s.classList.add('show');
     ck.disabled=true;
   }
@@ -835,7 +839,7 @@ l3el.innerHTML=L3.map((q,qi)=>`
  <div class="card" data-l3="${qi}">
   <span class="rdate">${q.d}</span>
   <div class="qhead"><span class="qtitle">${q.t}</span><span class="qtag">${q.tag}</span></div>
-  <div class="situ"><span class="slabel">当時の情報 — 당시 시점에서 알 수 있었던 것</span>${q.s}</div>
+  <div class="situ"><span class="slabel">당시 정보 — 그 시점에서 알 수 있었던 것</span>${q.s}</div>
   <div class="assets">${q.a.map((a,ai)=>`
    <div class="arow" data-ai="${ai}">
     <span class="aname">${a.n}</span>
@@ -849,7 +853,7 @@ l3el.innerHTML=L3.map((q,qi)=>`
   <textarea class="mychain" id="mc${qi}" placeholder="나의 연상 사슬을 먼저 적는다 (예: 사건 → 1차 → 2차 → 3차). 적고 나서 결과를 열어야 훈련이 된다."></textarea>
   <button class="primary" data-open="${qi}">실제 결과 열기</button>
   <div class="outcome" id="oc${qi}">
-   <div class="obox"><span class="olabel">実際の結果 — 실제로 일어난 일</span>${q.o}</div>
+   <div class="obox"><span class="olabel">실제 결과 — 실제로 일어난 일</span>${q.o}</div>
    <div class="lesson"><b>교훈</b> — ${q.l}</div>
   </div>
  </div>`).join('');

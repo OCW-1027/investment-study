@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>連想思考トレーニング</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+</head>
+<body>
+<style>
+:root{
+  --bg:#F4F6F9; --surface:#FFFFFF; --surface2:#EDF1F6; --ink:#1B2836; --muted:#5E6E80;
+  --accent:#2F4E8C; --accent-ink:#FFFFFF; --accent-soft:#E8EDF6;
+  --up:#C0392F; --up-soft:#F9ECEA; --down:#1E7A63; --down-soft:#E7F2EF;
+  --warn:#8A6A1F; --warn-soft:#F6EFDC;
+  --line:#D9E0E8; --shadow:0 1px 3px rgba(27,40,54,.08),0 4px 16px rgba(27,40,54,.06);
+  --ok:#1E7A63; --bad:#C0392F;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10151C; --surface:#192029; --surface2:#1F2833; --ink:#E7ECF2; --muted:#94A2B2;
+    --accent:#82A0DC; --accent-ink:#10151C; --accent-soft:#223048;
+    --up:#E4756A; --up-soft:#3A2320; --down:#47B393; --down-soft:#1B3129;
+    --warn:#D9B45C; --warn-soft:#332B18;
+    --line:#2A3441; --shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+    --ok:#47B393; --bad:#E4756A;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10151C; --surface:#192029; --surface2:#1F2833; --ink:#E7ECF2; --muted:#94A2B2;
+  --accent:#82A0DC; --accent-ink:#10151C; --accent-soft:#223048;
+  --up:#E4756A; --up-soft:#3A2320; --down:#47B393; --down-soft:#1B3129;
+  --warn:#D9B45C; --warn-soft:#332B18;
+  --line:#2A3441; --shadow:0 1px 3px rgba(0,0,0,.4),0 4px 16px rgba(0,0,0,.3);
+  --ok:#47B393; --bad:#E4756A;
+}
+*{box-sizing:border-box; margin:0; padding:0}
+body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans KR',-apple-system,'Hiragino Sans','Noto Sans KR',sans-serif; line-height:1.65; font-size:15.5px; -webkit-font-smoothing:antialiased}
+.wrap{max-width:960px; margin:0 auto; padding:0 20px 90px}
+header.hero{padding:44px 0 20px; border-bottom:1px solid var(--line); position:relative}
+.langlink{position:absolute; top:22px; right:0; font-size:12.5px}
+.langlink a{color:var(--muted); text-decoration:none; border:1px solid var(--line); border-radius:999px; padding:4px 12px}
+.langlink a:hover{color:var(--accent); border-color:var(--accent)}
+.hero .kicker{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; margin-bottom:10px}
+.hero h1{font-family:'Gowun Batang',serif; font-weight:700; font-size:clamp(30px,5vw,42px); letter-spacing:-.01em; text-wrap:balance}
+.hero h1 .jp{color:var(--muted); font-size:.55em; font-weight:400; margin-left:.5em; letter-spacing:.08em}
+.hero p.sub{color:var(--muted); margin-top:10px; max-width:62ch}
+.flow{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:18px; font-family:'IBM Plex Mono',monospace; font-size:12.5px}
+.flow .fnode{background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:4px 12px}
+.flow .fnode.hot{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.flow .farr{color:var(--muted)}
+nav.tabs{position:sticky; top:0; z-index:50; background:var(--bg); border-bottom:1px solid var(--line); display:flex; gap:4px; overflow-x:auto; padding:10px 0 0; margin-bottom:30px}
+nav.tabs button{appearance:none; border:none; background:none; color:var(--muted); font:inherit; font-size:14px; font-weight:500; padding:9px 14px 11px; cursor:pointer; border-bottom:2.5px solid transparent; white-space:nowrap}
+nav.tabs button:hover{color:var(--ink)}
+nav.tabs button.on{color:var(--accent); border-bottom-color:var(--accent); font-weight:700}
+nav.tabs button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px; border-radius:6px}
+section.pane{display:none}
+section.pane.on{display:block; animation:fade .25s ease}
+@keyframes fade{from{opacity:0; transform:translateY(4px)}to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ section.pane.on{animation:none} .chip.wrong{animation:none!important} }
+h2.sec{font-family:'Gowun Batang',serif; font-size:24px; margin:6px 0 6px; letter-spacing:-.01em}
+p.lede{color:var(--muted); margin-bottom:22px; max-width:68ch}
+p.lede b{color:var(--ink)}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:22px 22px 20px; margin-bottom:22px}
+.qhead{display:flex; align-items:baseline; gap:10px; margin-bottom:14px; flex-wrap:wrap}
+.qnum{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.1em; color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:2px 8px; font-weight:500}
+.qtitle{font-weight:700; font-size:16.5px}
+.qtag{font-size:11.5px; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:1px 9px}
+/* chain */
+.chain{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:14px 0 4px}
+.cnode{background:var(--surface2); border:1px solid var(--line); border-radius:10px; padding:6px 12px; font-size:14px}
+.cnode.blank{border-style:dashed; border-color:var(--accent); color:var(--accent); font-family:'IBM Plex Mono',monospace; font-size:13px; min-width:74px; text-align:center}
+.cnode.solved{background:var(--accent-soft); border-color:var(--accent); color:var(--ink); font-weight:500}
+.carr{color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:13px}
+.choices{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.choices .clabel{width:100%; font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace}
+.chip{appearance:none; font:inherit; font-size:14px; background:var(--surface); color:var(--ink); border:1.5px solid var(--line); border-radius:999px; padding:5px 15px; cursor:pointer}
+.chip:hover{border-color:var(--accent); color:var(--accent)}
+.chip:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.chip.wrong{border-color:var(--bad); color:var(--bad); animation:shake .3s}
+.chip[disabled]{opacity:.45; cursor:default}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.explain{display:none; margin-top:16px; border-top:1px dashed var(--line); padding-top:14px; font-size:14.5px}
+.explain.show{display:block}
+.explain .exlabel{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; color:var(--accent); margin-bottom:6px}
+.explain p{margin-bottom:8px}
+.explain p:last-child{margin-bottom:0}
+.trapnote{background:var(--warn-soft); color:var(--warn); border-radius:10px; padding:10px 14px; font-size:13.5px; margin-top:10px}
+button.ghost{appearance:none; font:inherit; font-size:13.5px; font-weight:500; background:none; border:1px solid var(--line); color:var(--muted); border-radius:8px; padding:6px 14px; cursor:pointer; margin-top:14px}
+button.ghost:hover{border-color:var(--accent); color:var(--accent)}
+button.primary{appearance:none; font:inherit; font-size:14px; font-weight:700; background:var(--accent); color:var(--accent-ink); border:none; border-radius:9px; padding:9px 20px; cursor:pointer; margin-top:14px}
+button.primary:hover{filter:brightness(1.08)}
+button.primary[disabled]{opacity:.4; cursor:default}
+button.primary:focus-visible,button.ghost:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+/* direction picker rows */
+.assets{display:flex; flex-direction:column; gap:10px; margin-top:14px}
+.arow{display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:9px 12px; border:1px solid var(--line); border-radius:10px; background:var(--surface)}
+.aname{flex:1 1 180px; font-weight:500; font-size:14.5px}
+.dirbtns{display:flex; gap:6px}
+.dbtn{appearance:none; font-family:'IBM Plex Mono',monospace; font-size:13px; border:1.5px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:4px 12px; cursor:pointer}
+.dbtn:hover{border-color:var(--ink); color:var(--ink)}
+.dbtn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.dbtn.selU{background:var(--up-soft); border-color:var(--up); color:var(--up); font-weight:500}
+.dbtn.selD{background:var(--down-soft); border-color:var(--down); color:var(--down); font-weight:500}
+.dbtn.selN{background:var(--surface2); border-color:var(--muted); color:var(--ink); font-weight:500}
+.averdict{width:100%; display:none; font-size:13.5px; color:var(--muted); padding-top:6px; border-top:1px dashed var(--line)}
+.averdict.show{display:block}
+.averdict .mark{font-family:'IBM Plex Mono',monospace; font-weight:500}
+.mark.ok{color:var(--ok)} .mark.ng{color:var(--bad)}
+.scoreline{display:none; margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:13.5px; color:var(--accent)}
+.scoreline.show{display:block}
+/* replay */
+.rdate{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--accent-ink); background:var(--accent); display:inline-block; border-radius:6px; padding:2px 10px; margin-bottom:10px}
+.situ{background:var(--surface2); border-radius:10px; padding:14px 16px; font-size:14.5px; margin:10px 0 4px}
+.situ .slabel{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; color:var(--muted); display:block; margin-bottom:6px}
+textarea.mychain{width:100%; min-height:74px; margin-top:12px; background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font:inherit; font-size:14px; resize:vertical}
+textarea.mychain:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.outcome{display:none; margin-top:16px}
+.outcome.show{display:block}
+.outcome .obox{background:var(--accent-soft); border-radius:10px; padding:14px 16px; font-size:14.5px}
+.outcome .olabel{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; color:var(--accent); display:block; margin-bottom:6px}
+.lesson{margin-top:10px; padding:12px 16px; border-left:3px solid var(--accent); font-size:14.5px}
+.lesson b{font-family:'Gowun Batang',serif}
+/* briefing */
+.bday{display:flex; align-items:baseline; gap:10px; margin:26px 0 12px}
+.bday:first-child{margin-top:0}
+.bday .bd{font-family:'Gowun Batang',serif; font-size:20px; font-weight:700}
+.bday .bw{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted)}
+.bday::after{content:""; flex:1; border-top:1px solid var(--line)}
+.bitem .bnews{font-weight:700; font-size:15.5px; margin-bottom:10px; text-wrap:balance}
+.btagline{display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; color:var(--accent); background:var(--accent-soft); border-radius:6px; padding:2px 8px; margin-bottom:8px}
+.bchain{background:var(--surface2); border-radius:9px; padding:9px 13px; font-size:13.8px; margin-bottom:10px}
+.bchain .blab,.bscen .blab{font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:.12em; color:var(--muted); display:block; margin-bottom:2px}
+.bscen{font-size:14px; margin-bottom:12px}
+.bcols{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px}
+@media (max-width:560px){ .bcols{grid-template-columns:1fr} }
+.bcol{border:1px solid var(--line); border-radius:9px; padding:9px 12px; font-size:13.5px}
+.bcol .bclab{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; display:block; margin-bottom:4px}
+.bcol.good .bclab{color:var(--up)} .bcol.badc .bclab{color:var(--down)}
+.bcol ul{list-style:none}
+.bcol li{padding-left:13px; position:relative; margin-bottom:2px}
+.bcol.good li::before{content:"▲"; position:absolute; left:0; color:var(--up); font-size:10px; top:4px}
+.bcol.badc li::before{content:"▼"; position:absolute; left:0; color:var(--down); font-size:10px; top:4px}
+.bwatch{font-size:13px; color:var(--muted); border-top:1px dashed var(--line); padding-top:8px}
+.bwatch b{color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.08em}
+/* commodity */
+.cmdh{display:flex; align-items:baseline; gap:10px; margin:30px 0 6px}
+.cmdh:first-of-type{margin-top:0}
+.cmdh .ct{font-family:'Gowun Batang',serif; font-size:20px; font-weight:700}
+.cmdh .cn{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.14em; color:var(--accent)}
+.cmdh::after{content:""; flex:1; border-top:1px solid var(--line)}
+.cmdlede{color:var(--muted); font-size:14px; margin-bottom:14px; max-width:70ch}
+.tblwrap{overflow-x:auto; margin:8px 0 4px}
+table.sched{border-collapse:collapse; width:100%; font-size:13.5px; min-width:560px}
+table.sched th{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em; color:var(--muted); text-align:left; padding:6px 12px; border-bottom:1.5px solid var(--line)}
+table.sched td{padding:7px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+table.sched td:first-child{font-weight:500; white-space:nowrap}
+table.sched td.mono{font-family:'IBM Plex Mono',monospace; font-size:12.5px; white-space:nowrap; font-variant-numeric:tabular-nums}
+/* map */
+.mapgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px}
+details.mcard{background:var(--surface); border:1px solid var(--line); border-radius:13px; box-shadow:var(--shadow); overflow:hidden}
+details.mcard summary{list-style:none; cursor:pointer; padding:15px 18px; display:flex; align-items:center; gap:10px}
+details.mcard summary::-webkit-details-marker{display:none}
+details.mcard summary:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+.mico{font-family:'IBM Plex Mono',monospace; font-size:12px; background:var(--accent-soft); color:var(--accent); border-radius:7px; padding:3px 8px; font-weight:500; white-space:nowrap}
+.mtitle{font-weight:700; font-size:15px; flex:1}
+.mchev{color:var(--muted); transition:transform .2s}
+details.mcard[open] .mchev{transform:rotate(90deg)}
+.mbody{padding:0 18px 16px; font-size:13.8px}
+.mrow{margin-bottom:10px}
+.mrow .mlab{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.1em; display:block; margin-bottom:3px}
+.mlab.l1{color:var(--accent)} .mlab.l2{color:var(--muted)} .mlab.trap{color:var(--warn)}
+.mrow ul{list-style:none}
+.mrow li{padding-left:14px; position:relative; margin-bottom:3px}
+.mrow li::before{content:"→"; position:absolute; left:0; color:var(--muted); font-family:'IBM Plex Mono',monospace; font-size:12px}
+.updn{font-family:'IBM Plex Mono',monospace; font-weight:500}
+.updn.u{color:var(--up)} .updn.d{color:var(--down)}
+/* journal */
+.jform{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.jfield{display:flex; flex-direction:column; gap:5px}
+.jfield.full{grid-column:1/-1}
+.jfield label{font-size:12.5px; font-weight:500; color:var(--muted)}
+.jfield input,.jfield textarea,.jfield select{font:inherit; font-size:14px; background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:9px; padding:8px 11px}
+.jfield textarea{min-height:64px; resize:vertical}
+.jfield input:focus-visible,.jfield textarea:focus-visible,.jfield select:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.jstats{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px}
+.stat{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 18px; min-width:110px}
+.stat .sv{font-family:'IBM Plex Mono',monospace; font-size:22px; font-weight:500; font-variant-numeric:tabular-nums}
+.stat .sk{font-size:12px; color:var(--muted)}
+.jentry{border-left:3px solid var(--line)}
+.jentry.hit{border-left-color:var(--ok)} .jentry.miss{border-left-color:var(--bad)} .jentry.partial{border-left-color:var(--warn)}
+.jtop{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+.jdate{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted)}
+.jbadge{font-size:11.5px; border-radius:999px; padding:1px 10px; font-weight:500}
+.jbadge.pending{background:var(--surface2); color:var(--muted)}
+.jbadge.hit{background:var(--down-soft); color:var(--ok)}
+.jbadge.miss{background:var(--up-soft); color:var(--bad)}
+.jbadge.partial{background:var(--warn-soft); color:var(--warn)}
+.jnews{font-weight:700; margin:6px 0 4px}
+.jchain{font-size:13.8px; color:var(--muted); white-space:pre-wrap}
+.jmeta{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--muted); margin-top:8px}
+.jverify{margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.vbtn{appearance:none; font:inherit; font-size:12.5px; border:1px solid var(--line); background:var(--surface); border-radius:8px; padding:4px 12px; cursor:pointer; color:var(--muted)}
+.vbtn:hover{color:var(--ink); border-color:var(--ink)}
+.vbtn.h:hover{color:var(--ok); border-color:var(--ok)}
+.vbtn.m:hover{color:var(--bad); border-color:var(--bad)}
+.jdel{margin-left:auto; color:var(--muted); background:none; border:none; font-size:12px; cursor:pointer; text-decoration:underline}
+.jdel:hover{color:var(--bad)}
+.jresult{margin-top:8px; font-size:13.5px; background:var(--surface2); border-radius:8px; padding:8px 12px}
+.emptyj{color:var(--muted); font-size:14px; padding:16px 0}
+.notice{font-size:12.5px; color:var(--muted); margin-top:14px}
+.howto{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:22px; margin-bottom:26px}
+.howto ol{margin-left:20px; margin-top:8px}
+.howto li{margin-bottom:6px}
+.howto .hlabel{font-family:'IBM Plex Mono',monospace; font-size:11.5px; letter-spacing:.12em; color:var(--accent)}
+footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px}
+@media (max-width:640px){ .jform{grid-template-columns:1fr} .hero{padding-top:30px} }
+</style>
+
+<div class="wrap">
+<header class="hero">
+  <div class="langlink"><a href="https://ocw-1027.github.io/investment-study/">한국어판(韓国語版) →</a></div>
+  <div class="kicker">Input → Association → Judgment → Invest</div>
+  <h1>連想思考トレーニング</h1>
+  <p class="sub">ニュースが一つ入ってきた瞬間、資産全体に矢印が自動で描かれる状態をつくる訓練場。
+  1次連想はすでに価格に織り込まれている — 収益は、大衆が立ち止まる場所より一歩先へ進むところから生まれる。</p>
+  <div class="flow">
+    <span class="fnode">インプット</span><span class="farr">→</span>
+    <span class="fnode hot">連想ゲーム</span><span class="farr">→</span>
+    <span class="fnode">目利き(銘柄選別)</span><span class="farr">→</span>
+    <span class="fnode">投資</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-pane="brief" class="on">今日のブリーフィング</button>
+  <button data-pane="map">連想マップ</button>
+  <button data-pane="cmd">コモディティ深掘り</button>
+  <button data-pane="l1">① チェーン完成</button>
+  <button data-pane="l2">② 分岐連想</button>
+  <button data-pane="l3">③ 歴史リプレイ</button>
+  <button data-pane="l4">④ デイリー日誌</button>
+</nav>
+
+<section class="pane on" id="pane-brief">
+  <h2 class="sec">今日の連想ブリーフィング</h2>
+  <p class="lede">毎営業日の朝(東京市場の寄り付き前)に自動更新される実戦連想の事例集。
+  <b>ニュース → 連想チェーン → 可能性 → 追い風/逆風の銘柄 → チェックポイント</b>の形式で、連想ゲームが実際にどう使われるかが毎日積み上がります。
+  読む前に見出しだけを見て自分でチェーンを描き、それから照合すると訓練効果は倍増します。
+  学習用のシナリオ分析であり、売買の推奨ではありません。</p>
+  <div id="briefwrap"></div>
+</section>
+
+<section class="pane" id="pane-map">
+  <div class="howto">
+    <span class="hlabel">HOW TO TRAIN</span>
+    <ol>
+      <li><b>① チェーン完成</b> — 基礎体力。空欄を埋めながら標準的な因果チェーンを体に刻む。</li>
+      <li><b>② 分岐連想</b> — 一つのイベントから複数の資産へ同時に矢印を描く。</li>
+      <li><b>③ 歴史リプレイ</b> — 実際の事件を「当時の情報だけ」で予測し、実際の結果と照合する。罠ケースを含む。</li>
+      <li><b>④ デイリー日誌</b> — 今日のニュースで実戦連想を記録し、1週間・1ヶ月後に自分で検証する。ここまで来れば「自然にできる」段階だ。</li>
+    </ol>
+  </div>
+  <h2 class="sec">連想マップ — トリガー別の標準チェーン</h2>
+  <p class="lede">ドリルで詰まったら戻ってくるリファレンス。<b>1次連想は常識、2次・3次が収益の源泉、罠は逆に動く条件</b>である。
+  <span class="updn u">▲赤=上昇</span>、<span class="updn d">▼緑=下落</span>(日本の株価ボードの慣例)。</p>
+  <div class="mapgrid" id="mapgrid"></div>
+</section>
+
+<section class="pane" id="pane-cmd">
+  <h2 class="sec">コモディティ深掘り</h2>
+  <p class="lede">株とコモディティは文法が違う — <b>株は利益を、商品は需給を追う。</b>そして先物という器には、限月・ロールオーバー・ポジションという固有のルールがある。
+  CFDで商品を扱うなら、このページが基本だ。</p>
+
+  <div class="cmdh"><span class="cn">01</span><span class="ct">先物の文法 — すべての商品に共通する構造</span></div>
+  <div class="mapgrid">
+    <details class="mcard"><summary><span class="mico">曲線</span><span class="mtitle">コンタンゴ / バックワーデーション</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">構造</span><ul>
+          <li><b>コンタンゴ</b>: 期先 &gt; 期近 — 在庫が潤沢で保管コストが乗った「平常時」のカーブ。限月ごとに割高な次の限月へ乗り換えるため<b>ロールオーバーコスト</b>が漏れていく</li>
+          <li><b>バックワーデーション</b>: 期近 &gt; 期先 — 「今すぐ」現物が足りないというシグナル。ロールオーバーがむしろ収益になる</li></ul></div>
+        <div class="mrow"><span class="mlab l2">実戦での意味</span><ul>
+          <li>CFD・ETFの長期保有における最大の隠れコスト — 方向が合っていても時間に負ける(特に天然ガスはコンタンゴが日常)</li>
+          <li>バックワーデーション転換は需給タイト化の強い証拠 — カーブの「形」はニュースより正直だ</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>2020年の原油回復局面で原油ETFが現物の反発に追いつけなかった理由がコンタンゴのロールコスト。商品の方向と、器(vehicle)の損益は別物である。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">建玉</span><span class="mtitle">COTレポート — ポジションの極端</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">読み方</span><ul>
+          <li>CFTCが毎週公表(JST土曜早朝)。投機筋(Non-commercial)と実需ヘッジャー(Commercial)のポジション</li>
+          <li>投機筋の買い越しが史上級の極端 = 「買う人はもう買い切った」→ 小さな悪材料で決済の連鎖</li></ul></div>
+        <div class="mrow"><span class="mlab l2">2次連想</span><ul>
+          <li>ヘッジャー(生産者)はスマートマネー — 生産者が大量の売りヘッジを掛けたなら、彼らの見る上限がそこにあるということ</li>
+          <li>ポジションの極端 + シーズンの転換点が重なると反転確率が高まる</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>極端は「いつ」を教えてくれない — 極端なまま数ヶ月続くこともある。方向の根拠ではなく、リスク管理(ポジション縮小)のシグナルとして使うこと。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">季節</span><span class="mtitle">シーズナリティ</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">代表パターン</span><ul>
+          <li>天然ガス: 冬の暖房(11〜3月)・夏の冷房需要、4〜10月は在庫の注入期</li>
+          <li>ガソリン・原油: 米ドライビングシーズン(5〜9月)の需要ピーク</li>
+          <li>金: インドの婚礼・祭事シーズン(9〜11月)、中国の春節前の実需</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>シーズナリティは「平年」の話 — その年の需給ショック(寒波・戦争・減産)が季節性を圧倒する。背景のリズムとしてのみ使うこと。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">需給</span><span class="mtitle">実物需給 vs 金融需給</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">二つの市場</span><ul>
+          <li>実物: 生産・在庫・消費 — ゆっくり動く底流</li>
+          <li>金融(ペーパー): 先物・オプション・CTA — レバレッジで短期の価格を支配</li></ul></div>
+        <div class="mrow"><span class="mlab l2">実戦</span><ul>
+          <li>急騰急落の大半は金融需給(追証・決済の連鎖) — 株式のVIXショックと同じ文法</li>
+          <li>実物需給と乖離した価格はやがて回帰する — 「今の価格を作っているのは実物かポジションか」を問うこと</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>2022年のLMEニッケル・ショートスクイーズのように、金融需給が市場そのものを壊すこともある — レバレッジ市場では「ありえない価格」が実際に来る。</div></div>
+      </div></details>
+  </div>
+
+  <div class="cmdh"><span class="cn">02</span><span class="ct">天然ガス — CFD実戦の深掘り</span></div>
+  <p class="cmdlede">異名「ウィドウメーカー(未亡人製造機)」 — 商品の中でも最高水準のボラティリティ。方向よりポジションサイジングが生死を分ける。</p>
+  <div class="mapgrid">
+    <details class="mcard"><summary><span class="mico">天気</span><span class="mtitle">天気が王様 — HDD/CDD</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">基本チェーン</span><ul>
+          <li>寒波予報 → 暖房度日(HDD) ↑ → ガス需要 ↑ → 在庫取り崩し加速 → 価格 <b class="updn u">▲</b></li>
+          <li>猛暑予報 → 冷房度日(CDD) ↑ → ガス火力の発電需要 ↑ → 価格 <b class="updn u">▲</b></li></ul></div>
+        <div class="mrow"><span class="mlab l2">実戦</span><ul>
+          <li>価格を動かすのは「予報の変化」 — 米NOAAの6-10日・8-14日予報の更新が急変トリガー</li>
+          <li>予報はまだ実現していない需要 → 予報が穏やかになった瞬間プレミアムは即座に消滅(地政学プレミアムと同じ文法)</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>「寒波が来た」というニュースが出た時点では、すでに予報段階で価格に織り込み済みのことが大半 — ニュースではなく予報サイクルを見ること。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">在庫</span><span class="mtitle">EIA週間在庫 — 毎週の勝負どころ</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">読み方</span><ul>
+          <li>毎週木曜夜(JST 23:30、冬時間は金曜 00:30)発表 — 予想比サプライズで急変動</li>
+          <li>絶対量ではなく<b>5年平均比</b>の在庫が基準 — 平均より少なければタイト</li></ul></div>
+        <div class="mrow"><span class="mlab l2">2次連想</span><ul>
+          <li>注入期(4〜10月)に在庫が平年を満たせない → 冬入り前にプレミアムが蓄積</li>
+          <li>在庫サプライズ + COTポジションの極端が重なる日が最も大きく動く</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>発表直後の初動がフェイクであることも多い — 数字そのものより「価格が数字にどう反応するか」(悪材料で下がらなければ底のシグナル)を見ること。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">LNG</span><span class="mtitle">輸出ターミナルと地域市場の分断</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">構造</span><ul>
+          <li>天然ガスはヘンリーハブ(米)・TTF(欧)・JKM(アジア)に分断された地域市場 — LNG設備が唯一の橋</li>
+          <li>米輸出ターミナルの稼働停止 = 米国内は供給過剰(<b class="updn d">▼</b>)、欧州・アジアは供給減(<b class="updn u">▲</b>) — 同じニュースが正反対に作用する</li></ul></div>
+        <div class="mrow"><span class="mlab l2">日本との接続</span><ul>
+          <li>JKM急騰 → 都市ガス・電力のスポット調達コスト ↑ (ただし長期契約中心のため短期の影響は緩衝される)</li>
+          <li>INPEX(1605)はLNGプロジェクトを保有 — ガス価格の恩恵方向</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>「天然ガス上昇」という一括りの連想は外れる — 必ずどのハブの価格かを先に確認。楽天CFDの天然ガスはヘンリーハブ(NYMEX)基準。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">危機</span><span class="mtitle">ウィドウメーカーのリスク管理</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">なぜ危険か</span><ul>
+          <li>1日±10%が珍しくない — レバレッジCFDでは一瞬で強制ロスカット圏</li>
+          <li>ギャップが大きい: 週末に予報が変われば月曜は大きく窓を開けて始まる</li></ul></div>
+        <div class="mrow"><span class="mlab l2">原則</span><ul>
+          <li>ポジションサイズは「このポジションが-15%行っても口座が平気か」で決める</li>
+          <li>損切りは価格ではなく<b>ロジックが崩れた地点</b> — エントリー根拠(予報・在庫)が覆れば価格を問わず決済</li>
+          <li>発表イベント(EIA・NOAA更新)直前の新規エントリーはギャンブル — ポジションはイベント前に減らすもの</li></ul></div>
+      </div></details>
+  </div>
+
+  <div class="cmdh"><span class="cn">03</span><span class="ct">金・銀の深掘り</span></div>
+  <div class="mapgrid">
+    <details class="mcard"><summary><span class="mico">金利</span><span class="mtitle">金の3層構造 — 何が金価格を決めるのか</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">3つのドライバー(優先順位は局面ごとに交代)</span><ul>
+          <li>① 実質金利: 10年TIPS金利と逆相関 — 平時の教科書(FREDで確認)</li>
+          <li>② 中央銀行の買い: 2022年以降、年1,000トンペースの構造的な買い — 金利に反応しない買い手</li>
+          <li>③ 危機・財政の信認: 地政学、米債務40兆ドル、「債券より金」(ダリオ) — 債券から逃げた資金の受け皿</li></ul></div>
+        <div class="mrow"><span class="mlab l2">日本の投資家にとっての4層目</span><ul>
+          <li>円建て金価格 = ドル建て金 × 為替 — 円安が重なれば二重の上昇、円高転換ならNY金が上がっても相殺されうる</li>
+          <li>関連銘柄: 住友金属鉱山(5713・金採掘)、アサヒHD(5857・貴金属リサイクル)</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>「金利↑=金↓」の教科書だけを信じると2024〜26年のラリーを丸ごと取り逃す — 今どの層が支配的かを毎回確認(③のリプレイケース参照)。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">鉱山</span><span class="mtitle">金鉱株 — レバレッジの明暗</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">レバレッジ構造</span><ul>
+          <li>採掘コスト(AISC)はほぼ固定 → 金価格の上昇分が利益に増幅されて反映 — 金+20%が利益+50%になる構造</li></ul></div>
+        <div class="mrow"><span class="mlab l2">ただし</span><ul>
+          <li>原油高・人件費上昇はAISCを押し上げレバレッジを削る — 金と原油が同時に上がるインフレ局面で金鉱株が金に追いつけない理由</li>
+          <li>個別鉱山のリスク(事故・国有化・品位低下)は金と無関係な下落要因</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>金鉱株は「金 + 株式市場ベータ」 — 株全体が暴落する日には、金が上がっても金鉱株は一緒に売られる。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">金銀比</span><span class="mtitle">金銀比価と銀の需給</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">金銀比価 (Gold/Silver Ratio)</span><ul>
+          <li>歴史的レンジはおよそ45〜125 — 80超は銀の相対割安シグナルとして機能することが多い</li>
+          <li>貴金属強気相場の後半に銀が金をキャッチアップし、比率が急低下するパターンが繰り返されてきた</li></ul></div>
+        <div class="mrow"><span class="mlab l2">産業需要の顔</span><ul>
+          <li>銀需要の半分以上が産業用 — 特に太陽光パネルが構造的な増加分</li>
+          <li>数年連続の供給不足(生産+リサイクル &lt; 需要) — 在庫減少が長期のナラティブ</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>景気後退の局面では金は避難先として耐え、銀は産業需要の崩壊で一緒に下がる — 金銀比のトレードは「なぜ開いたのか」の確認が先。</div></div>
+      </div></details>
+  </div>
+
+  <div class="cmdh"><span class="cn">04</span><span class="ct">原油の深掘り</span></div>
+  <div class="mapgrid">
+    <details class="mcard"><summary><span class="mico">OPEC</span><span class="mtitle">供給カルテルの力学</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">価格を決める三つの勢力</span><ul>
+          <li>OPEC+: 減産枠で下限を防衛 — サウジの財政均衡油価(80ドル前後)が彼らの防衛ライン</li>
+          <li>米シェール: 損益分岐40〜50ドル台 — 価格が上がれば増産で上値を抑える</li>
+          <li>戦略石油備蓄(SPR): 政治的な放出カード — 急騰時の抑制要因</li></ul></div>
+        <div class="mrow"><span class="mlab l2">2次連想</span><ul>
+          <li>減産発表 → 急騰しても、枠の違反が常態 — 発表と実行を区別する</li>
+          <li>油価の下限防衛に失敗 = カルテル亀裂のシグナル → シェア戦争(2014、2020)なら暴落チェーン</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>需要崩壊で下がる原油(景気後退)と、供給増で下がる原油は株式に正反対 — 下落の「原因」が連想の出発点。</div></div>
+      </div></details>
+    <details class="mcard"><summary><span class="mico">精製</span><span class="mtitle">クラックスプレッドと関連銘柄マップ</span><span class="mchev">›</span></summary>
+      <div class="mbody">
+        <div class="mrow"><span class="mlab l1">チェーンの地図</span><ul>
+          <li>原油高 → 上流(探査・生産): INPEX(1605) <b class="updn u">▲</b>、総合商社 <b class="updn u">▲</b></li>
+          <li>精製マージン(クラックスプレッド) ↑ → 石油元売り: ENEOS(5020)・出光(5019)・コスモ(5021) — 油価そのものよりマージンを見る</li>
+          <li>原油高 → 燃料の消費者: 空運(9201・9202)・海運・運輸 <b class="updn d">▼</b></li></ul></div>
+        <div class="mrow"><span class="mlab l2">チェック指標</span><ul>
+          <li>EIA原油在庫(水 23:30 JST、クッシング在庫に注目)・ベーカーヒューズ稼働リグ数(土早朝)・WTI-ブレントスプレッド</li></ul></div>
+        <div class="mrow"><span class="mlab trap">罠</span><div>石油元売りは原油高の恩恵に見えるが、実際の動力はマージン — 油価が上がってもクラックが死ねば元売り株は下がる。</div></div>
+      </div></details>
+  </div>
+
+  <div class="cmdh"><span class="cn">05</span><span class="ct">週間指標カレンダー (JST)</span></div>
+  <div class="card">
+    <div class="tblwrap"><table class="sched">
+      <tr><th>指標</th><th>時刻 (JST)</th><th>動くもの</th><th>見るポイント</th></tr>
+      <tr><td>EIA 原油在庫</td><td class="mono">水 23:30 (冬 木 00:30)</td><td>WTI・石油元売り</td><td>予想比サプライズ、クッシング在庫</td></tr>
+      <tr><td>EIA 天然ガス在庫</td><td class="mono">木 23:30 (冬 金 00:30)</td><td>ヘンリーハブNG</td><td>5年平均比、予想比</td></tr>
+      <tr><td>ベーカーヒューズ リグ数</td><td class="mono">土 早朝</td><td>原油・NG (中期供給)</td><td>増加トレンド = 将来の供給増</td></tr>
+      <tr><td>CFTC COTレポート</td><td class="mono">土 早朝</td><td>全商品 (ポジション)</td><td>投機筋ネットポジションの極端</td></tr>
+      <tr><td>NOAA 6-10 / 8-14日予報</td><td class="mono">毎日早朝 更新</td><td>天然ガス</td><td>予報の「変化の方向」</td></tr>
+      <tr><td>OPEC月報・IEA月報</td><td class="mono">毎月中旬</td><td>原油</td><td>需要見通しの上方・下方修正</td></tr>
+      <tr><td>米CPI・雇用統計</td><td class="mono">21:30 (冬 22:30)</td><td>ドル経由で全商品</td><td>金利観測 → ドル → 商品の共通分母</td></tr>
+    </table></div>
+    <p class="notice">時刻は米サマータイム基準。発表直前の新規ポジションはギャンブル — イベント前には減らすのが原則。</p>
+  </div>
+</section>
+
+<section class="pane" id="pane-l1">
+  <h2 class="sec">① チェーン完成ドリル</h2>
+  <p class="lede">因果チェーンの空欄を埋める。間違えても理由を考えてもう一度選ぶこと — <b>正解より「なぜ」が訓練</b>である。全部埋めると解説が開く。</p>
+  <div id="l1list"></div>
+</section>
+
+<section class="pane" id="pane-l2">
+  <h2 class="sec">② 分岐連想ドリル</h2>
+  <p class="lede">一つのイベントが起きた。各資産の<b>方向をすべて選んでから</b>模範解答と照合する。
+  「中立・不確実」が正解の資産もある — すべてに確信を持つことがむしろ不正解だ。</p>
+  <div id="l2list"></div>
+</section>
+
+<section class="pane" id="pane-l3">
+  <h2 class="sec">③ 歴史リプレイ</h2>
+  <p class="lede">実際の事件を<b>当時の時点の情報だけ</b>で向き合う。方向を予測し、自分の連想チェーンを書いてから実際の結果を開く。
+  わざと<b>1次連想が外れた罠ケース</b>を混ぜてある。</p>
+  <div id="l3list"></div>
+</section>
+
+<section class="pane" id="pane-l4">
+  <h2 class="sec">④ デイリー連想日誌</h2>
+  <p class="lede">今日のニュース一つ → 連想チェーンを記録 → 期限が来たら検証。<b>的中率より「何次まで連想したか」を伸ばすこと</b>が目的だ。
+  記録はこのブラウザにのみ保存される。</p>
+  <div class="jstats" id="jstats"></div>
+  <div class="card">
+    <div class="jform">
+      <div class="jfield full"><label for="jnews">今日のニュース・イベント</label><input id="jnews" placeholder="例: 米7月CPI 前年比+3.4%、予想上回る"></div>
+      <div class="jfield full"><label for="jchain">自分の連想チェーン (1次 → 2次 → 3次)</label><textarea id="jchain" placeholder="1次: 利下げ観測後退 → ドル↑ 円↓&#10;2次: 日本の輸出株を支え、高PERグロース株に圧迫&#10;3次: 円安長期化 → 輸入インフレ → 日銀利上げ圧力 → 銀行株"></textarea></div>
+      <div class="jfield"><label for="jtarget">対象資産・銘柄</label><input id="jtarget" placeholder="例: 日経225 / 8306 三菱UFJ"></div>
+      <div class="jfield"><label for="jdir">予想方向</label><select id="jdir"><option value="up">▲ 上昇</option><option value="down">▼ 下落</option><option value="range">〜 レンジ・ボラのみ</option></select></div>
+      <div class="jfield"><label for="jhorizon">検証期間</label><select id="jhorizon"><option>1週間</option><option>2週間</option><option selected>1ヶ月</option><option>3ヶ月</option></select></div>
+      <div class="jfield"><label for="jconf">確信度</label><select id="jconf"><option>★☆☆☆☆</option><option>★★☆☆☆</option><option selected>★★★☆☆</option><option>★★★★☆</option><option>★★★★★</option></select></div>
+    </div>
+    <button class="primary" id="jadd">日誌に記録</button>
+    <p class="notice">保存はこのブラウザのローカルストレージのみ。他の端末とは同期されないため、長期保管が必要な内容は別途控えてください。</p>
+  </div>
+  <div id="jlist"></div>
+</section>
+
+<footer>連想思考トレーニング — 二次的思考(Second-order Thinking)訓練用の自習ドリル。
+本資料の事例・解説は学習目的であり、特定銘柄の売買を推奨するものではありません。投資判断の最終責任はご自身にあります。</footer>
+</div>
+
+<script>
+/* ---------- 今日の連想ブリーフィング ---------- */
+const DAILY=[
+/* DAILY_DATA:v1 — 自動更新マーカー。新しい日付の項目はこの行の直下に追加し、31日を超えた分は配列末尾から削除する。 */
+ {date:'2026-08-25',wd:'火',items:[
+  {tag:'米国発 · AI半導体',
+   news:'NY: ダウ +140ドル(53,417) vs ナスダック -0.8% — エヌビディア -2.9%。「AI製品の値上げ通知」報道で顧客負担・インフラ投資の持続性に警戒感',
+   chain:'AIチップ値上げ → ハイパースケーラーのコスト負担 ↑ → 設備投資の持続性に疑問 → 高バリュエーション半導体の利益確定 → 資金は消費・ディフェンシブへ回転',
+   scen:'26日(水)のエヌビディア決算まで半導体は慎重ムード継続の可能性。決算サプライズなら一気に巻き戻し、ミスならチェーン下流(装置・素材)まで二次的な下落波及',
+   good:['内需・ディフェンシブ(通信・食品)','コンテンツ・サービス(リクルート等の非AI成長)','貴金属関連(下の金チェーンと連動)'],
+   bad:['AI半導体直結 — アドバンテスト(6857)・東京エレクトロン(8035)・キオクシア','ソフトバンクG(9984)などAI投資の大型株'],
+   watch:'8/26 NVDA決算 · SOX指数 · 米10年債4.70%を維持するか'},
+  {tag:'金利 · 金',
+   news:'米30年債金利が20年ぶりの高水準、日本の長期金利も一時2.945%(30年ぶり) — 共通の背景は財政不安。NY金は3ヶ月ぶりの高値、ダリオ「債券より金」',
+   chain:'財政赤字 → 国債増発 → 長期金利 ↑ → 債券の信認低下 → 逃避資金が金へ → 円安と重なり国内金価格は最高値圏 → 貴金属関連株 ▲',
+   scen:'金利上昇が「財政プレミアム」由来なら高PER株のバリュエーション圧迫は構造的に継続。金は調整があっても買い手(中央銀行)が金利に反応しないため下値が固い構図',
+   good:['貴金属・金鉱関連 — 住友金属鉱山(5713)・リサイクル関連','銀行(貸出マージン改善、ただし8/24は一服)'],
+   bad:['高PERグロース株・REIT(割引率・調達コスト)','長期債比率の大きい機関・保険(評価損懸念)'],
+   watch:'日10年債3%突破の有無 · 米30年債 · 国内金小売価格(2.5万円台)'},
+  {tag:'原油',
+   news:'原油先物が約2%下落',
+   chain:'原油 ▼ → インフレ圧力の緩和 → 金利負担の軽減(株式の追い風) + 燃料コスト負担の緩和',
+   scen:'イラン発の供給リスクが再燃しない限り、原油の安定は金利沈静化 → 株式を支えるチェーンとして機能',
+   good:['空運 — JAL(9201)・ANA(9202)','電力・ガス(調達コスト緩和)'],
+   bad:['INPEX(1605)・石油関連'],
+   watch:'イラン情勢 · WTIの流れ'},
+ ]},
+ {date:'2026-08-24',wd:'月',items:[
+  {tag:'東京市場 引け後レビュー',
+   news:'日経平均 65,528円(-488、続落) — 日米金利上昇 + 韓国テック株安。下落寄与はアドバンテスト・ソフトバンクG・キオクシアに集中。ただし33業種中20業種は上昇',
+   chain:'長期金利 ↑ → 高バリュエーションAI半導体の利益確定売り → 指数は下落しつつ物色は回転(サービス・建設・その他製品 ▲) → 「主役交代」進行',
+   scen:'「指数下落 = 全面安」ではなかった — 回転相場。銀行株も一服に入り、物色の主役が移動中',
+   good:['サービス・建設・その他製品の業種','東京エレクトロン(+86円寄与)・リクルート(+62円寄与)'],
+   bad:['鉱業・情報通信・保険の業種','AI大型株(アドバンテスト -338円寄与)'],
+   watch:'金利の安定 · 回転物色の持続性'},
+  {tag:'貴金属',
+   news:'NY金が3ヶ月ぶり高値 — 指数下落の中でも貴金属関連は堅調',
+   chain:'財政不安 → 債券からの逃避 → 金 ▲ → 円安の換算効果 → 国内金価格は最高値圏 → 貴金属・リサイクル関連株 ▲',
+   scen:'「株が崩れる時に上がるもの」をポートフォリオに持つ観点で、金のチェーンはヘッジとしても機能',
+   good:['貴金属・金鉱・リサイクル関連'],
+   bad:['長期債(同じチェーンの反対側)'],
+   watch:'中央銀行の金購入統計 · ドル指数'},
+ ]},
+];
+
+/* ---------- 連想マップ ---------- */
+const MAP=[
+ {ico:'金利',t:'米金利 ↑ (Fed引き締め)',l1:['ドル <b class="updn u">▲</b> / 円 <b class="updn d">▼</b> (金利差拡大)','高PERグロース・IT <b class="updn d">▼</b> (割引率上昇)','バリュー株・銀行は相対的に <b class="updn u">▲</b>'],l2:['円安 → 日本の輸出株 <b class="updn u">▲</b>','金 <b class="updn d">▼</b> (機会費用上昇)、新興国から資金流出','REIT・不動産 <b class="updn d">▼</b> (調達コスト)'],trap:'利上げ「終了示唆」が出た瞬間、すべての矢印が反転する。水準ではなく方向転換を見よ。'},
+ {ico:'日銀',t:'日本の金利 ↑ (日銀正常化)',l1:['円 <b class="updn u">▲</b> 圧力','銀行・保険 <b class="updn u">▲</b> (利ざや・運用益)','REIT・不動産 <b class="updn d">▼</b>、高配当株の魅力低下'],l2:['円高 → 輸出株 <b class="updn d">▼</b> → 日経平均は短期的に圧迫','円キャリー解消のトリガー → 世界のリスク資産 <b class="updn d">▼</b>'],trap:'2024.3のように「織り込み済み + 緩和的ガイダンス」なら円はむしろ安くなる。サプライズの大きさが方向を決める。'},
+ {ico:'円安',t:'円安進行',l1:['輸出株(自動車・機械) <b class="updn u">▲</b>','インバウンド(百貨店・鉄道・ホテル) <b class="updn u">▲</b>','海外資産の円換算益 <b class="updn u">▲</b>'],l2:['輸入物価 ↑ → 内需の食品・電力のマージン <b class="updn d">▼</b>','実質賃金 ↓ → 消費の圧迫','物価 ↑ → 日銀の利上げ圧力 → 銀行株 (3次)','財務省の口先介入 → 実弾介入リスク'],trap:'150円前後からは「介入警戒」がチェーンに入る。円安メリットの連想は介入リスクとセットで。'},
+ {ico:'原油',t:'原油 ↑',l1:['エネルギー・総合商社 <b class="updn u">▲</b>','空運・海運・運輸のコスト <b class="updn d">▼</b>(マージン)','インフレ期待 ↑ → 金利 ↑'],l2:['日本の貿易収支悪化 → 円安要因','電力・ガス料金 ↑ → 消費の圧迫','再エネ・原発再稼働テーマ <b class="updn u">▲</b>'],trap:'「需要が強くて上がる原油」は景気好調のシグナル、「供給ショックの原油」はスタグフレーションのシグナル。原因が違えば株の方向も違う。'},
+ {ico:'物価',t:'インフレ ↑',l1:['中央銀行の引き締め → 金利 ↑','実物資産(不動産・金・コモディティ) <b class="updn u">▲</b>','債券 <b class="updn d">▼</b>'],l2:['価格転嫁できる企業 <b class="updn u">▲</b> / できない企業 <b class="updn d">▼</b> — 同じ業種の中で分かれる','賃金 ↑ → 人件費比率の高い内需サービス <b class="updn d">▼</b>'],trap:'ディスインフレ転換(CPI下振れ)が確認された瞬間、それまでの勝者と敗者が丸ごと入れ替わる。'},
+ {ico:'VIX',t:'VIX急騰 · 需給ショック',l1:['リスクパリティ・CTAの機械的な売り → 先物主導の <b class="updn d">▼</b>','優良株まで無差別に下落 (ファンダメンタルズ無関係)'],l2:['レバレッジ決済が終われば急反発 — 2024.8.5 日経 -12.4% → 翌日 +10.2%','ボラ沈静化(VIX低下転換)が戻り買いのシグナル'],trap:'需給発の暴落で損切りと新規エントリーを混同しないこと。CFDは決済の渦に最も巻き込まれやすい場所だ。'},
+ {ico:'景気',t:'景気後退シグナル',l1:['景気敏感株(機械・化学・海運) <b class="updn d">▼</b>','ディフェンシブ(食品・医薬・通信)は相対的に <b class="updn u">▲</b>','利下げ観測 → 債券 <b class="updn u">▲</b>'],l2:['「悪いニュース=利下げ観測=株高」局面と「悪いニュース=業績崩壊=株安」局面を区別する','逆イールド解消(スティープ化)がむしろ景気後退直前のシグナルだった事例が多数'],trap:'利下げそのものは好材料ではない。「なぜ下げるのか」が予防的なら▲、景気後退対応なら▼。'},
+ {ico:'半導体',t:'AI · 半導体サイクル',l1:['AI投資 ↑ → GPU・HBM需要 ↑','装置(東京エレクトロン・アドバンテスト・ディスコ) <b class="updn u">▲</b>','素材(信越化学・SUMCO) <b class="updn u">▲</b>'],l2:['データセンターの電力需要 ↑ → 電線(古河電工・住友電工)・変圧器・電力株 (チェーンの下流、遅れて動く)','マイクロボールマウンタなど後工程実装装置もHBM積層需要の延長線'],trap:'サイクル産業 — 受注残・メモリ価格が折れるシグナルが出れば、チェーン全体が逆回転する。'},
+ {ico:'中国',t:'中国の景気刺激 · 回復',l1:['中国関連の日本株(コマツ・ファナック・資生堂) <b class="updn u">▲</b>','コモディティ(銅・鉄鉱石) <b class="updn u">▲</b>、豪ドル <b class="updn u">▲</b>'],l2:['インバウンド消費(免税) <b class="updn u">▲</b>','過剰生産の輸出 → 鉄鋼・化学はむしろ <b class="updn d">▼</b> 圧迫の可能性も'],trap:'刺激策「発表」で急騰 → 規模への失望で反落のパターンが繰り返される。発表と執行を区別せよ。'},
+ {ico:'地政学',t:'地政学リスク',l1:['原油・金 <b class="updn u">▲</b>','防衛関連(三菱重工など) <b class="updn u">▲</b>','リスクオフ → 株 <b class="updn d">▼</b>・債券 <b class="updn u">▲</b>'],l2:['サプライチェーン再編 → 国内回帰・友好国生産の恩恵銘柄','海運運賃 ↑ (航路迂回) → 海運株 <b class="updn u">▲</b>'],trap:'円はかつて「安全通貨」だったが、最近は有事の円高反応が弱い。古い連想をそのまま使わないこと。'},
+ {ico:'DXY',t:'ドル指数 ↑ (ドル高)',l1:['ドル建てコモディティ(金・原油・銀) <b class="updn d">▼</b> 圧力 — 他通貨の保有者には割高になる','新興国のドル建て債務負担 ↑ → 新興国の株・通貨 <b class="updn d">▼</b>','円安 → 日本の輸出株 <b class="updn u">▲</b>'],l2:['米多国籍企業の海外収益の換算 <b class="updn d">▼</b> — アップル・MSの業績の隠れた逆風','資源国通貨(豪ドル・レアル) <b class="updn d">▼</b>','ドルのピークアウト確認 → 押さえ込まれていたコモディティの買いタイミング (エモリ流の逆張り発想)'],trap:'平時の「ドル↑=金↓」は危機局面で壊れる — リスクオフではドルと金が同時に避難先となり一緒に上がる。'},
+ {ico:'GOLD',t:'金 — 無国籍通貨',l1:['実質金利 ↓ → 金 <b class="updn u">▲</b> (無利子資産の機会費用減少)','ドル <b class="updn d">▼</b> → 金 <b class="updn u">▲</b>','地政学リスク → 金 <b class="updn u">▲</b>'],l2:['中央銀行の買い(脱ドル) → 金利と無関係な構造的な買い — 2022年ロシア制裁以降に加速','金 <b class="updn u">▲</b> → 金鉱株(住友金属鉱山 5713、ニューモント・バリック)はレバレッジでより大きく','国内円建て金価格 = ドル建て金 × 為替 — 円安と重なれば二重の上昇 → 貴金属・リサイクル関連株','米財政不安(債務40兆ドル) → 「債券より金」 — 債券から逃げる資金の受け皿'],trap:'教科書は「金利↑=金↓」だが2024〜26年は高金利でも史上最高値 — 中央銀行の買いと財政の信認低下が教科書に勝った。今どのドライバーが支配的かを毎回問うこと。'},
+ {ico:'OIL',t:'原油 — 供給と需要の綱引き',l1:['供給ショック(OPEC+減産・中東) → 原油 <b class="updn u">▲</b> → INPEX(1605)・総合商社 <b class="updn u">▲</b>','空運(9201・9202)・運輸の燃料費 ↑ → マージン <b class="updn d">▼</b>','インフレ期待 ↑ → 金利上昇圧力'],l2:['日本の貿易収支悪化 → 円安要因','電力・ガスの原価 ↑ → 料金引き上げ → 消費の圧迫','高油価の持続 → 再エネ・原発再稼働テーマ <b class="updn u">▲</b>'],trap:'「需要崩壊で下がる原油」(景気後退シグナル)と「供給緩和で下がる原油」(好材料)は株に正反対。そして地政学プレミアムは事件が日常化すれば急速に消滅する — 2022年の原油がそうだった。'},
+ {ico:'SILVER',t:'銀 — 二つの顔を持つ金属',l1:['金の上昇トレンド → 銀も連動して <b class="updn u">▲</b> (貴金属の顔)','太陽光・電子部品の需要 ↑ → 銀 <b class="updn u">▲</b> (産業金属の顔)'],l2:['金銀比価(Gold/Silver Ratio)が80超 → 銀の相対割安 → キャッチアップラリーが繰り返されてきた水準','ボラティリティは金の1.5〜2倍 — 同じロジックでも値幅が違う','非鉄関連(住友金属鉱山・三井金属など)にも波及'],trap:'景気後退が来れば金は避難先として耐え、銀は産業需要の崩壊で一緒に下がる — 「金が上がるから銀も」は景気局面の確認後に。'},
+];
+
+/* ---------- L1 チェーン完成 ---------- */
+const L1=[
+ {t:'米CPIサプライズ',tag:'マクロ基本',chain:['米CPIが予想上振れ',{opts:['利上げ観測 ↑','利下げ観測 ↑','政策は無反応'],ans:0},'米国債金利 ↑',{opts:['ドル安','ドル高','為替は無関係'],ans:1},'円安進行',{opts:['輸出株に恩恵','輸出株に打撃','輸入株に恩恵'],ans:0}],
+  ex:'物価↑ → 引き締め観測 → 米金利↑ → 日米金利差拡大 → ドル高・円安。円安は輸出企業の利益を押し上げ、米金利上昇は高PERグロース株の割引率を高めて逆風になる。'},
+ {t:'コロナ危機の全チェーン',tag:'講義の事例',chain:['コロナ発生','企業の危機',{opts:['利上げ','利下げ','増税'],ans:1},'流動性供給 · 企業の復活','株価 ↑ · 給料 ↑',{opts:['デフレ','インフレ','為替固定'],ans:1},{opts:['現金の価値 ↑','実物資産(不動産・金) ↑','債券利回りの急低下が持続'],ans:1}],
+  ex:'危機そのものではなく<b>政策の反応</b>まで連想するのが核心。危機 → 緩和 → 流動性 → 資産価格 → インフレ → 実物資産。2020〜2022年に実際に起きた順序そのままだ。'},
+ {t:'日銀の利上げ',tag:'日本特化',chain:['日銀が利上げ',{opts:['円安圧力','円高圧力','為替は無関係'],ans:1},{opts:['銀行株 ↑ (利ざや)','銀行株 ↓ (貸出減少)','銀行株は無反応'],ans:0},{opts:['REIT・不動産 ↑','REIT・不動産 ↓','REITは無関係'],ans:1}],
+  ex:'金利↑ → 円高圧力 + 銀行の利ざや改善。逆に借入コストが上がる不動産・REIT、円高に晒される輸出株は圧迫される。ただし「すでに織り込まれているか」で実際の反応は変わる(③の2024.3ケース参照)。'},
+ {t:'円安の2次・3次連想',tag:'日本特化 · 応用',chain:['円安進行','輸出株 ↑ (1次·常識)',{opts:['輸入物価 ↑','輸入物価 ↓','物価は無関係'],ans:0},'内需の食品・電力のマージン圧迫 (2次)',{opts:['日銀の緩和圧力','日銀の利上げ圧力','政策は無関係'],ans:1},'銀行株 (3次)'],
+  ex:'大衆は「円安=輸出株」で止まる。輸入インフレ → 実質賃金の圧迫 → 政策転換圧力 → 銀行株まで行けば、他人より二歩先に立っている。収益はこの区間から生まれる。'},
+ {t:'AI投資拡大 — チェーンの下流まで',tag:'セクター→銘柄',chain:['AIデータセンター投資の拡大','GPU・HBM需要 ↑',{opts:['半導体装置の受注 ↑','装置の受注 ↓','装置は無関係'],ans:0},'東京エレクトロン・アドバンテスト ↑',{opts:['通信料金 ↓','電力需要 ↑','物流費 ↓'],ans:1},{opts:['電線・変圧器・電力株','ゲーム株','銀行株'],ans:0}],
+  ex:'大きなテーマはチェーンの末端(電力・素材・インフラ)まで順番に波及する。上流(NVDA)に乗り遅れても、下流(電線・変圧器)に機会が残っていることが多い。HBM積層需要は後工程の実装装置まで繋がる。'},
+ {t:'原油急騰',tag:'コモディティ',chain:['中東リスク → 原油急騰',{opts:['インフレ期待 ↑','インフレ期待 ↓','物価は無関係'],ans:0},'金利上昇圧力',{opts:['総合商社・エネルギー ↑','空運・海運 ↑','内需小売 ↑'],ans:0},{opts:['日本の貿易収支は改善','日本の貿易収支は悪化','貿易は無関係'],ans:1},'円安要因'],
+  ex:'原油高は資源国・商社に追い風、燃料費のかかる空運・運輸に逆風。日本はエネルギー輸入国なので貿易収支悪化 → 円安要因というマクロのチェーンまで繋がる。'},
+ {t:'VIX急騰 — 需給のチェーン',tag:'CFD·先物',chain:['VIX急騰',{opts:['CTA・リスクパリティの機械的な売り','長期投資家の買い','需給は無反応'],ans:0},'先物主導の下落 (ファンダメンタルズ無関係)',{opts:['ボラ沈静化で戻り買い','下落が無限に継続','取引停止'],ans:0}],
+  ex:'ボラティリティ目標型ファンドはVIXが上がると<b>ルールに従って</b>売る。良い会社かどうかに関係なく無差別売り → 決済が終われば巻き戻し。CFDの短期トレードで最も頻繁に出会う需給チェーンだ。'},
+ {t:'Good news is bad news',tag:'逆方向の訓練',chain:['米雇用が大幅サプライズ (経済が強い)',{opts:['利下げ観測の後退','利下げ観測の強化','政策は無関係'],ans:0},'金利 ↑ · ドル ↑',{opts:['株価は上昇','株価はむしろ下落もありうる','株価は無反応'],ans:1}],
+  ex:'経済が良いというニュースが株には悪材料になる局面がある — 市場が利下げを待っている時だ。同じインプットでも<b>市場が何を待っているか</b>で符号が変わる。連想ゲームの上級課程。'},
+ {t:'円キャリートレードの解消',tag:'日本特化 · リスク',chain:['日米金利差の縮小 (日銀利上げ + Fed利下げ観測)',{opts:['円キャリー拡大','円キャリー解消','キャリーは無関係'],ans:1},'円急騰',{opts:['世界のリスク資産が連れ安','日本だけ下落','影響なし'],ans:0},'日経急落 → 決済終了後に反発'],
+  ex:'安い円を借りて世界の資産を買う構造が逆回転すると、円高と世界的な株安が同時に来る。2024.8.5の-12.4%がこのチェーン一つで説明できる。詳しいリプレイは③で。'},
+ {t:'利下げの二つの顔',tag:'逆方向の訓練',chain:['Fedが利下げ開始',{opts:['理由を問わず無条件で好材料','「なぜ下げるのか」を先に問う','無条件で悪材料'],ans:1},{opts:['予防的利下げ → 株価 ▲','予防的利下げ → 株価 ▼','予防的利下げ → 無反応'],ans:0},{opts:['景気後退対応の利下げ → 株価 ▲','景気後退対応の利下げ → 株価 ▼ もありうる','景気後退対応 → 無反応'],ans:1}],
+  ex:'1995・2019年の予防的利下げは株高に、2001・2007年の景気後退対応の利下げは暴落とともに進行した。「利下げ=好材料」という1次連想は半分だけ正しい。原因を問うのが2次連想だ。'},
+ {t:'ドルとコモディティ — 買いタイミングの発想',tag:'コモディティ基本',chain:['Fed引き締め → ドル指数 ↑',{opts:['ドル建てコモディティに下落圧力','コモディティに上昇圧力','コモディティは無関係'],ans:0},'金・原油・銀の調整',{opts:['新興国のドル債務負担が増加','新興国の負担は減少','新興国は無関係'],ans:0},{opts:['ドルのピークアウト確認 → 買い機会を探す','ドル高継続を前提に追撃売り','何もしない'],ans:0}],
+  ex:'コモディティはドルで値付けされる — ドル高はそれ自体が価格の下落圧力。裏返せば、<b>ドル高に押さえ込まれていたコモディティはドルのピークアウトとともに戻ってくる。</b>「コモディティを買うならまずドルのチャートを見る」というエモリ流のタイミング発想。ただし危機局面ではドルと金が一緒に上がる例外を忘れずに。'},
+ {t:'実質金利と金、そして金鉱株',tag:'コモディティ',chain:['インフレ期待 ↑ · 名目金利は横ばい',{opts:['実質金利は低下','実質金利は上昇','実質金利は不変'],ans:0},{opts:['金は上昇','金は下落','金は無関係'],ans:0},{opts:['金鉱株は金より大きく上昇 (レバレッジ)','金鉱株は金と同じ幅','金鉱株は下落'],ans:0}],
+  ex:'金の最大の敵は「利子」。実質金利(名目金利−期待インフレ)が下がれば、無利子の金の相対的な魅力が上がる。金鉱株は採掘コストがほぼ固定のため、金価格の上昇分が利益に増幅されて反映される — 住友金属鉱山(5713)、ニューモント、バリックがこのチェーンの銘柄化だ。'},
+ {t:'国内金価格の二重チェーン',tag:'日本特化 · コモディティ',chain:['NY金が史上最高値圏',{opts:['円安と重なれば円建て金価格は二重に上昇','円安なら相殺されて下落','為替は無関係'],ans:0},'国内金小売価格が最高値圏 (2万円台後半)',{opts:['貴金属・リサイクル関連株 ▲','貴金属関連株 ▼','関連株は無反応'],ans:0}],
+  ex:'円建て金価格 = ドル建て金価格 × ドル円レート。ドル金の上昇と円安が重なれば国内金価格は<b>二重に</b>上がる。2026.8.24の東京市場で指数下落でも貴金属関連が堅調だった背景がまさにこのチェーン。逆に円高転換ならNY金が上がっても国内金は押さえられうる。'},
+ {t:'天然ガス — 天気プレミアムの生滅',tag:'CFD · 天然ガス',chain:['米NOAAの8-14日予報が記録的寒波を示唆',{opts:['暖房度日(HDD)の急増見込み','冷房度日の急増見込み','需要は無関係'],ans:0},'在庫取り崩し加速の見込み → NG先物急騰',{opts:['予報が穏やかに修正されればプレミアムは即消滅','予報と無関係に価格維持','寒波実現まで追加上昇が確定'],ans:0}],
+  ex:'天然ガスの最大のドライバーは天気、正確には<b>予報の変化</b>。予報はまだ実現していない需要なので、予報が修正された瞬間に価格から抜ける — 地政学プレミアムと同じ文法。エントリー前に「今の価格にはどんな天気が織り込まれているか」を問うこと。「寒波が来た」のニュース時点では織り込み済みのことが大半だ。'},
+ {t:'コンタンゴとCFDの保有コスト',tag:'先物の文法',chain:['期先が期近より高いコンタンゴ状態',{opts:['限月ごとにロールオーバーコストが発生','ロールオーバー収益が発生','ロールとは無関係'],ans:0},'現物価格が動かなくてもポジション価値は徐々に減少',{opts:['長期保有に不利 — バックワーデーションと区別が必要','長期保有に有利','保有期間とは無関係'],ans:0}],
+  ex:'CFD・ETFで商品を「長期保有」する際の最大の隠れコスト。2020年の原油回復局面で原油ETFが現物の反発に追いつけなかった理由がまさにコンタンゴのロールコストだ。天然ガスはコンタンゴが日常なので<b>方向が合っていても時間に負ける</b> — 短期勝負と長期保有は別のゲーム。'},
+ {t:'COTレポート — ポジションの極端',tag:'需給 · 先物',chain:['CFTC COT: 投機筋の買い越しが史上最大',{opts:['市場が一方向に偏り — 新たに買う人が少ない','上昇余力が最大という意味','何の情報でもない'],ans:0},{opts:['小さな悪材料でも決済の連鎖 — 反転警戒','好材料にだけ反応する安全な状態','中立'],ans:0}],
+  ex:'投機ポジションの極端は「みんなもう乗った」というシグナル — 残りの燃料がない時、小さな悪材料で決済のドミノが始まる。毎週土曜早朝(JST)公表。ただし極端は<b>いつ</b>を教えてくれない — 方向へのベットの根拠ではなく、ポジション縮小(リスク管理)のシグナルとして使うこと。'},
+];
+
+/* ---------- L2 分岐連想 ---------- */
+const L2=[
+ {t:'日銀、市場予想に反して0.25%の追加利上げ',tag:'日本特化',
+  a:[
+   {n:'円/ドル (円)',d:'up',r:'金利差縮小 → 円買い。ただし織り込み度合いによって値幅は変わる。'},
+   {n:'銀行株 (三菱UFJなど)',d:'up',r:'利ざや改善の直接の恩恵。日本の利上げチェーンの最上流。'},
+   {n:'輸出株 (トヨタなど)',d:'down',r:'円高は換算利益の減少。日経平均全体も短期的に圧迫。'},
+   {n:'J-REIT · 不動産',d:'down',r:'借入コスト上昇 + 分配金利回りの相対的な魅力低下。'},
+   {n:'米国株 (S&P500)',d:'neutral',r:'直接の影響は限定的だが、円キャリー解消が誘発されれば連れ安リスク。「不確実」が正直な答え。'},
+  ]},
+ {t:'米CPI、予想を大幅下振れ (ディスインフレ確認)',tag:'マクロ',
+  a:[
+   {n:'米10年債金利',d:'down',r:'引き締め終了・利下げ観測 → 債券買い、金利低下。'},
+   {n:'ナスダック (高PERグロース)',d:'up',r:'割引率低下の最大の恩恵。金利チェーンの反対側。'},
+   {n:'ドル/円',d:'down',r:'米金利低下 → 金利差縮小 → ドル安・円高方向。'},
+   {n:'金 (Gold)',d:'up',r:'実質金利低下 = 金の機会費用減少。ドル安も追い風。'},
+   {n:'日本の輸出株',d:'down',r:'円高方向なので圧迫。米国市場の上昇と符号が逆になりうる地点 — ここが分岐連想の核心。'},
+  ]},
+ {t:'中国、大規模な景気刺激策を発表',tag:'グローバル',
+  a:[
+   {n:'中国関連の日本株 (コマツ・ファナック・資生堂)',d:'up',r:'建機・FA・化粧品は中国売上比率の高い代表チェーン。'},
+   {n:'銅など産業金属',d:'up',r:'インフラ投資連想の定石。「Dr.Copper」。'},
+   {n:'インバウンド消費株 (百貨店・空港)',d:'up',r:'中国の消費回復 → 訪日観光回復の連想。'},
+   {n:'日本の鉄鋼・化学',d:'neutral',r:'需要回復の恩恵と、中国発の過剰生産・安値輸出の圧迫が相殺。刺激策の「中身」次第で分かれる。'},
+   {n:'豪ドル',d:'up',r:'資源輸出国の通貨は中国景気の代理指標。'},
+  ]},
+ {t:'米国、対中半導体装置の輸出規制を強化',tag:'半導体',
+  a:[
+   {n:'米装置株 (AMAT・LAM)',d:'down',r:'中国売上比率が大きく直接の打撃。'},
+   {n:'日本の装置株 (東京エレクトロン)',d:'down',r:'同調規制の圧力 + 中国売上縮小の懸念。ただし規制前の駆け込み購入で短期業績はむしろ良くなりうる。'},
+   {n:'中国国産の装置・素材関連',d:'up',r:'国産化加速の恩恵。規制の反射利益チェーン。'},
+   {n:'TSMC・先端ファウンドリ',d:'neutral',r:'中国の競争抑制は長期の追い風、地政学リスクそのものは逆風。時期によって消化のされ方が違う。'},
+   {n:'後工程・実装装置 (マウンタなど)',d:'neutral',r:'規制対象の範囲次第で分かれる — 先端前工程中心の規制なら影響は限定的。「範囲を確認する」が正解の場所。'},
+  ]},
+ {t:'米国、全品目の関税大幅引き上げを発表',tag:'政策',
+  a:[
+   {n:'日本の自動車輸出株',d:'down',r:'対米輸出採算悪化の最前線。'},
+   {n:'米国のインフレ期待',d:'up',r:'輸入物価上昇 → 物価圧力 → 利下げ後ずれのチェーン。'},
+   {n:'メキシコペソ・新興国通貨',d:'down',r:'対米輸出依存の経済に直撃。'},
+   {n:'日本の内需株 (小売・通信)',d:'neutral',r:'直接の影響は小さく相対的な避難先。ただし指数全体がリスクオフなら一緒に押される。'},
+   {n:'米国内の製造業 (鉄鋼など)',d:'up',r:'保護の直接の恩恵。関税の勝者を探すのも連想ゲーム。'},
+  ]},
+ {t:'大手ヘッジファンドの追証・強制決済の噂が拡散',tag:'需給 · CFD',
+  a:[
+   {n:'当該ファンドの保有推定銘柄群',d:'down',r:'ファンダメンタルズ無関係の無差別売り。2021年アルケゴス事件のチェーン。'},
+   {n:'指数先物 (日経・S&P)',d:'down',r:'ヘッジ売り + リスクオフの伝播。'},
+   {n:'VIX・日経VI',d:'up',r:'ボラ指標は決済局面の体温計。'},
+   {n:'下げ過ぎの優良株',d:'neutral',r:'短期はさらに下がりうるが、決済終了後の戻り候補。「今買うか」ではなく「リストを作る」が正解。'},
+   {n:'金・円などの避難先',d:'up',r:'リスクオフの古典的チェーン。ただし最近の円の避難機能は弱い — 値幅は控えめに。'},
+  ]},
+ {t:'Fed利下げ開始 + ドル指数急落',tag:'コモディティ',
+  a:[
+   {n:'金 (Gold)',d:'up',r:'実質金利低下 + ドル安の二重の追い風 — 金に最も教科書的な組み合わせ。'},
+   {n:'銀',d:'up',r:'貴金属の顔で金に付いていく。景気後退なき利下げ(予防的)なら産業需要も生きており金より大きく行くことも。'},
+   {n:'円/ドル (円)',d:'up',r:'米金利低下 → 金利差縮小 → 円高方向。'},
+   {n:'日本の輸出株',d:'down',r:'円高方向なので圧迫。米国の緩和 = 日本株の好材料という1次連想と符号が分かれる地点。'},
+   {n:'新興国株',d:'up',r:'ドル建て債務の負担軽減 + ドル安 → 新興国へ資金回帰。'},
+  ]},
+ {t:'ホルムズ海峡の緊張激化 — 原油急騰',tag:'エネルギー · 地政学',
+  a:[
+   {n:'INPEX・総合商社',d:'up',r:'資源価格上昇の直接の恩恵。エネルギーチェーンの最上流。'},
+   {n:'空運株 (JAL・ANA)',d:'down',r:'燃料費急騰の最前線。原油急騰時に最も機械的に売られる場所。'},
+   {n:'電力・ガス',d:'down',r:'調達コスト上昇。料金転嫁には時差があり、まずマージンが圧迫される。'},
+   {n:'金 (Gold)',d:'up',r:'地政学リスクの避難需要。原油発のインフレ期待も金には追い風。'},
+   {n:'米長期金利',d:'up',r:'原油 → インフレ期待 → 利下げ後ずれ。株全体にはこれが二次的な悪材料になる。'},
+  ]},
+ {t:'EIA天然ガス在庫、市場予想を大幅下回る (タイト確認)',tag:'天然ガス · 需給',
+  a:[
+   {n:'ヘンリーハブ天然ガス先物',d:'up',r:'需給タイトの直接の証拠。予想比サプライズが価格を動かす。'},
+   {n:'米ガス生産株 (EQTなど)',d:'up',r:'販売価格上昇の直接の恩恵。'},
+   {n:'日本の都市ガス株 (東京ガス 9531)',d:'neutral',r:'調達は原油連動の長期契約中心 — ヘンリーハブのスポット急騰の短期影響は限定的。「ガスだから直結」という1次連想の罠。'},
+   {n:'欧州TTFガス',d:'neutral',r:'米国の在庫と欧州の需給は分断された別市場 — LNG輸出余力を通じて間接的に繋がるのみ。'},
+   {n:'ガス火力比率の大きい米電力会社',d:'down',r:'燃料費上昇がマージンを圧迫。同じチェーンの反対側。'},
+  ]},
+];
+
+/* ---------- L3 歴史リプレイ ---------- */
+const L3=[
+ {d:'2020.03',t:'コロナショック — 世界同時暴落',tag:'政策反応の訓練',
+  s:'WHOがパンデミックを宣言。日経平均は1ヶ月で約-30%、米国ではサーキットブレーカーが繰り返し発動。経済封鎖で企業倒産の懸念が拡散中だ。あなたはここで「6ヶ月後」を連想しなければならない。',
+  a:[{n:'6ヶ月後のナスダック',d:'up'},{n:'6ヶ月後の金価格',d:'up'},{n:'不動産・実物資産 (1〜2年)',d:'up'}],
+  o:'Fedは即座にゼロ金利 + 無制限QE、各国は史上最大の財政支出。ナスダックは6ヶ月で史上最高値を更新し、金も史上最高値へ。その後、流動性は不動産・コモディティに流れ2021〜22年のインフレに繋がった — 講義のコロナチェーンそのままだ。',
+  l:'危機そのものではなく<b>危機が強制する政策の反応</b>まで連想できた人が底で買えた。「危機 → 緩和 → 流動性 → 資産価格」は最も繰り返し登場するチェーンである。'},
+ {d:'2021.12',t:'Fed、「インフレは一時的」を撤回 — 引き締め転換',tag:'講義の核心事例',
+  s:'インフレが40年ぶりの水準に上昇し、Fedが態勢転換。2022年の複数回利上げを予告した。一方で企業業績の見通しは依然最高水準 — GAFAの利益は史上最大で、アナリストは2022年も増益を予想している。',
+  a:[{n:'2022年のナスダック',d:'down'},{n:'2022年のエネルギー・バリュー株',d:'up'},{n:'2022年の米国債価格',d:'down'}],
+  o:'2022年のナスダックは約-33% — 業績に大きな問題はなかったのに崩れた。一方エネルギー・バリュー株は上昇、国債は「安全資産なのに」金利急騰で歴史的な下落。株と債券が同時に下がる稀な年になった。',
+  l:'株価 = 利益 × バリュエーション。<b>利益が良くても割引率(金利)が上がれば株価は下がる。</b>「業績に問題ないのになぜ下がる?」という疑問自体が、連想ゲームの不在を意味する。'},
+ {d:'2022.09',t:'急速な円安 — 145円突破',tag:'日本特化',
+  s:'日米金利差の拡大で円が年初の115円から145円まで急落。輸入物価が急騰し、財務省の口先介入の水位が上がっている。このチェーンの勝者・敗者と「次のイベント」を連想せよ。',
+  a:[{n:'輸出株 (トヨタなど) の業績',d:'up'},{n:'内需の食品・電力企業のマージン',d:'down'},{n:'財務省の実弾介入の可能性',d:'up'}],
+  o:'トヨタなど輸出大手は史上最高益を更新。一方で食品・電力は原価急騰に圧迫され、生活物価の上昇は政治問題化。財務省は9〜10月、24年ぶりの円買い実弾介入を断行した。その後、インバウンド回復が百貨店・鉄道株を押し上げた。',
+  l:'為替のチェーンは<b>勝者(輸出・インバウンド)と敗者(輸入・内需)を同時に</b>生む。そして一定水準を超えると「政策介入」という新しいノードがチェーンに加わる。150円台では常に介入警戒をセットで連想すること。'},
+ {d:'2023.03',t:'SVB破綻 — 米銀行の連鎖不安',tag:'罠ケース',
+  s:'シリコンバレー銀行が光速の取り付けで破綻、シグネチャー銀行が続き、クレディ・スイスまで揺れている。「2008年の再来」という見出しが溢れる中。1次連想は「金融危機 → 株の全面売り」だ。あなたの連想は?',
+  a:[{n:'米地方銀行株',d:'down'},{n:'ナスダック・大型テック',d:'up'},{n:'利下げ観測',d:'up'}],
+  o:'地銀株は暴落したが、ナスダックはむしろ<b>上昇</b>した。銀行不安 → 引き締めが限界に来たという解釈 → 利下げ観測 → 割引率低下の恩恵を受けるビッグテックへ資金移動。預金も大手銀行とMMFへ移り、「危機の受益者」が明確だった。',
+  l:'罠ケース。<b>危機が即、全面安ではない — 危機の受益者を探すのが2次連想だ。</b>「この事件で中央銀行の次の一手がどう変わるか」を挟むと符号が反転することが多い。'},
+ {d:'2023.03',t:'東証、PBR1倍割れ企業に改善要求',tag:'制度変化 · 長期チェーン',
+  s:'東証がPBR1倍未満の上場企業に資本効率の改善策の公表を要求した。退屈な制度ニュースに見える。しかし日本の上場企業の約半分がPBR1倍未満だ。このニュースのチェーンは何年ものか?',
+  a:[{n:'低PBRバリュー株 (商社・銀行・鉄鋼)',d:'up'},{n:'自社株買い・増配の発表件数',d:'up'},{n:'日経平均 (1〜2年)',d:'up'}],
+  o:'自社株買い・増配が史上最大水準に急増し、商社・銀行・鉄鋼など万年割安株が構造的に再評価された。バフェットの商社株買い増しが火に油を注ぎ、日経平均は2024年、34年ぶりに史上最高値を更新した。',
+  l:'<b>制度の変化は最も長く強いチェーンを生む。</b>一日のニュースではなく数年もののテーマになる。「退屈に見える構造改革ニュース」こそ大衆が連想しない場所 — だから収益が長く残っていた。'},
+ {d:'2024.03',t:'日銀、17年ぶりの利上げ — マイナス金利解除',tag:'罠ケース',
+  s:'日銀がマイナス金利・YCCを終了した。歴史的な転換だ。教科書的な1次連想は「利上げ → 円高」。ただしこの決定は事前報道で十分に予告されており、植田総裁は「当面、緩和的な環境が続く」と付け加えた。ドル円は151円。あなたの連想は?',
+  a:[{n:'発表後の円',d:'down'},{n:'日本の銀行株 (中期)',d:'up'},{n:'日経平均 (当日〜短期)',d:'up'}],
+  o:'円は教科書と逆に<b>さらに安く</b>なった(151→160円、4月の介入を誘発)。すでに織り込み済みだった上に「緩和継続」のガイダンス、そして依然圧倒的な日米金利差のため。日経平均は不透明感の解消で堅調、銀行株は金利正常化のチェーンに乗って中期の上昇を続けた。',
+  l:'罠ケースの王道。<b>「知られたニュース」はすでに価格である。方向を決めるのは事件ではなくサプライズの大きさとガイダンスだ。</b>連想ゲームに「市場はどこまで知っていたか?」というノードを必ず追加すること。'},
+ {d:'2024.08',t:'8月5日 — 円キャリー解消ショック',tag:'需給 · CFDの教科書',
+  s:'7月31日に日銀が追加利上げを断行し、8月2日に米雇用統計が大幅悪化。日米金利差縮小の見通しで円が急騰中だ。低金利の円を借りて世界の資産に投資してきたキャリーポジションが揺れている。月曜の朝、日経先物は急落スタート。ここでどう連想するか?',
+  a:[{n:'当日の日経平均',d:'down'},{n:'翌日〜数日の日経平均',d:'up'},{n:'数ヶ月後の日経平均 (ファンダメンタルズ毀損の有無)',d:'up'}],
+  o:'8/5の日経平均は-12.4%(4,451円)、ブラックマンデーを超える史上最大の下落幅。しかし翌日+10.2%の反発、数ヶ月で下落分の大半を回復した。企業業績が毀損したのではなく<b>レバレッジ決済という需給現象</b>だったからだ。',
+  l:'需給発の暴落は過剰反応する — <b>決済が終われば価格はファンダメンタルズへ回帰する。</b>CFDトレーダーには二重の教訓: レバレッジはこういう日に強制ロスカットで終わりうる(ポジションサイジング)、そして決済の渦が過ぎた場所が機会だ(エントリータイミング)。'},
+ {d:'2022.11',t:'ChatGPT公開 — 5日で100万ユーザー',tag:'テーマの伝播経路',
+  s:'OpenAIが対話型AIを公開し話題だ。まだ「珍しいおもちゃ」扱いする人も多い。もしこれが本物の汎用技術なら — お金はどんな順序で、どこまで流れていくのか?チェーンの下流の末端まで連想してみよ。',
+  a:[{n:'GPU (エヌビディア)',d:'up'},{n:'日本の半導体装置・素材 (TEL・アドバンテスト・ディスコ)',d:'up'},{n:'電力・電線インフラ (チェーンの下流)',d:'up'}],
+  o:'エヌビディアは2年余りで約10倍になり世界時価総額のトップ圏へ。チェーンはGPU → HBM(SKハイニックス) → 製造・検査装置(TEL・アドバンテスト・ディスコが急騰) → そして1年以上遅れてデータセンターの電力問題が浮上し、電線(古河電工など)・変圧器・電力株が遅れて急騰した。',
+  l:'大きなテーマは<b>チェーンの上流から下流へ時差を持って伝播</b>する。上流(NVDA)を逃しても中流(装置)・下流(電力インフラ)には機会が残っていた。「このテーマのお金がまだ届いていない場所はどこか?」が実戦の問いだ。'},
+ {d:'2022.03',t:'ロシア侵攻 — 原油スーパースパイク',tag:'地政学プレミアムの生滅',
+  s:'ロシアがウクライナに侵攻した。原油は130ドルを突破、小麦・ニッケルも暴騰。「原油200ドル」の見通しが見出しを飾る。供給ショックは明白だ。あなたは原油の6ヶ月後と、商社・INPEXの1年後をそれぞれ連想しなければならない — 同じ方向だろうか?',
+  a:[{n:'原油 (6ヶ月後)',d:'down'},{n:'INPEX・総合商社 (1年後)',d:'up'},{n:'欧州株 (短期)',d:'down'}],
+  o:'原油は6月の120ドル台をピークに下半期は70〜80ドル台まで反落 — 景気後退懸念、戦略備蓄の放出、供給の再編がプレミアムを溶かした。ところが商社とINPEXは、その間に積み上げた史上最高益 + 円安 + 低PBR再評価 + バフェットの買いが重なり、年間では大幅上昇を続けた。',
+  l:'地政学プレミアムは事件が「日常化」すれば消滅する。しかし<b>プレミアムが生きている間に利益を積んだ企業の株価は残る。</b>コモディティ価格と関連株は同じチェーンの上にあっても時間軸が違う — 商品はイベントを、株は利益を追う。'},
+ {d:'2024→26',t:'金の史上最高値ラリー — 教科書が壊れる時',tag:'罠ケース · コモディティ',
+  s:'米10年債金利は4%台の高止まり。教科書(実質金利モデル)通りなら無利子の金には不利な環境だ。ドルも強い局面があった。ところが金は2024年から史上最高値を連続更新中だ。1次連想(「金利↑=金↓」)と現実が食い違っている — 誰が、なぜ買っているのか?',
+  a:[{n:'金 (その後2年)',d:'up'},{n:'金鉱・貴金属関連株',d:'up'},{n:'米長期債価格',d:'down'}],
+  o:'答えは買い手の交代だった。新興国中央銀行の構造的な買い(脱ドル)、米債務40兆ドル時代の財政の信認低下、地政学 — 金利に反応しない買い手が市場を支配した。2026.8にレイ・ダリオは「債券より金」と発言し、NY金は再び最高値圏、米30年債金利は20年ぶりの高水準(=債券価格の下落)である。',
+  l:'相関関係は永遠ではない — <b>支配的なドライバーが変われば教科書は壊れる。</b>「誰がなぜ買うのか」を問えば(無利子でも買う中央銀行)、金利相関がなぜ無力化したかが見える。債券→金の資金移動は「財政の信認」というより大きなチェーンの一部であり、これは日本の長期金利上昇(30年ぶりの水準)とも同じ根っこだ。'},
+ {d:'2020.04',t:'WTIマイナス価格 — 先物の文法が牙を剥いた日',tag:'先物の文法 · 罠',
+  s:'コロナで原油需要が崩壊した。余った原油が貯蔵タンク(クッシング)を埋め尽くしていく。WTI5月限の満期が目前 — 先物を満期まで持てば実物の原油を受け取らなければならないが、ペーパー投資家には貯蔵する場所がない。ここで何が起きるか?',
+  a:[{n:'WTI 5月限 (満期直前)',d:'down'},{n:'半年後の現物原油価格',d:'up'},{n:'原油ETFの回復幅 (現物対比)',d:'down'}],
+  o:'5月限は史上初のマイナス、-37.63ドル — 実物を受け取れない投資家が「お金を払って」売った。原油自体は半年で40ドル台に回復したが、コンタンゴのロールコストのせいで原油ETF・ETNは現物ほど回復できず、一部は併合・上場廃止になった。',
+  l:'先物には満期と現物の受け渡しという文法がある — <b>方向が合っていても器(vehicle)が間違っていれば負ける。</b>CFD・ETFで商品を扱う時はコンタンゴ/バックワーデーションとロールオーバー構造を必ず確認。「さすがにこの価格はないだろう」はレバレッジ市場では成立しない。'},
+ {d:'2022.06',t:'フリーポートLNG爆発 — 同じ商品、正反対の価格',tag:'天然ガス · 罠',
+  s:'米LNG輸出基地フリーポートが火災で数ヶ月の稼働停止に。米国のガス輸出量の約15%が行き場を失った。折しも欧州はロシアのガス削減でエネルギー危機の真っ只中。1次連想は「供給事故 → ガス価格上昇」だ。だが — どの価格が?',
+  a:[{n:'米ヘンリーハブガス',d:'down'},{n:'欧州TTFガス',d:'up'},{n:'日本のスポットLNG (JKM) 調達コスト',d:'up'}],
+  o:'ヘンリーハブは急落 — 輸出できなくなったガスが米国内に積み上がったため。逆に欧州TTFは急騰 — 欧州に来るLNGが減ったため。同じ「天然ガス」が地域によって正反対に動いた。日本のJKMも欧州と物量を奪い合い上昇した。',
+  l:'天然ガスはパイプラインとLNG設備で<b>分断された地域市場</b>である。「ガス上昇」という一括りの連想は外れる — どのハブの価格か、物流が繋がっているかをまず確認すること。インフラ事故は供給側と需要側に正反対のニュースになる。楽天CFDの天然ガスはヘンリーハブ基準。'},
+];
+
+
+/* ---------- tabs ---------- */
+const tabs=document.getElementById('tabs');
+tabs.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('on',p.id==='pane-'+b.dataset.pane));
+  window.scrollTo({top:0});
+});
+const U='<span class="updn u">▲</span>', D='<span class="updn d">▼</span>';
+
+/* ---------- 오늘의 연상 브리핑 ---------- */
+function brender(){
+  const el=document.getElementById('briefwrap');
+  el.innerHTML=DAILY.map(d=>{
+    const[y,m,dd]=d.date.split('-');
+    return `<div class="bday"><span class="bd">${m}.${dd}</span><span class="bw">${y} · ${d.wd}曜日</span></div>`+
+    d.items.map(it=>`
+    <div class="card bitem">
+      <span class="btagline">${it.tag}</span>
+      <div class="bnews">${it.news}</div>
+      <div class="bchain"><span class="blab">連想チェーン</span>${it.chain}</div>
+      <div class="bscen"><span class="blab">可能性・シナリオ</span>${it.scen}</div>
+      <div class="bcols">
+        <div class="bcol good"><span class="bclab">追い風(恩恵の方向)</span><ul>${it.good.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="bcol badc"><span class="bclab">逆風(圧迫の方向)</span><ul>${it.bad.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      </div>
+      <div class="bwatch"><b>CHECK</b> — ${it.watch}</div>
+    </div>`).join('');
+  }).join('');
+}
+brender();
+
+/* ---------- 연상 지도 ---------- */
+document.getElementById('mapgrid').innerHTML=MAP.map(m=>`
+<details class="mcard"><summary><span class="mico">${m.ico}</span><span class="mtitle">${m.t}</span><span class="mchev">›</span></summary>
+<div class="mbody">
+<div class="mrow"><span class="mlab l1">1次連想 — 常識(すでに価格に織り込み)</span><ul>${m.l1.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+<div class="mrow"><span class="mlab l2">2次・3次連想 — 収益の源泉</span><ul>${m.l2.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+<div class="mrow"><span class="mlab trap">罠 — 逆に動く条件</span><div>${m.trap}</div></div>
+</div></details>`).join('');
+
+/* ---------- L1 사슬 완성 ---------- */
+/* nodes: string = fixed, object = blank {opts:[..], ans:index} */
+const l1el=document.getElementById('l1list');
+l1el.innerHTML=L1.map((q,qi)=>{
+  const nodes=q.chain.map((n,ni)=> typeof n==='string'
+    ? `<span class="cnode">${n}</span>`
+    : `<span class="cnode blank" id="b${qi}_${ni}" data-q="${qi}" data-n="${ni}">?</span>`
+  ).join('<span class="carr">→</span>');
+  const blanks=q.chain.map((n,ni)=> typeof n==='object'
+    ? `<div class="choices" id="c${qi}_${ni}"><span class="clabel">空欄 ${bidx(q,ni)} :</span>${n.opts.map((o,oi)=>`<button class="chip" data-q="${qi}" data-n="${ni}" data-o="${oi}">${o}</button>`).join('')}</div>`
+    : '').join('');
+  return `<div class="card" id="l1q${qi}">
+    <div class="qhead"><span class="qnum">DRILL ${String(qi+1).padStart(2,'0')}</span><span class="qtitle">${q.t}</span><span class="qtag">${q.tag}</span></div>
+    <div class="chain">${nodes}</div>${blanks}
+    <button class="ghost" data-ex="${qi}">解説を見る</button>
+    <div class="explain" id="ex${qi}"><div class="exlabel">解説 — なぜこう繋がるのか</div><p>${q.ex}</p></div>
+  </div>`;
+}).join('');
+function bidx(q,ni){let k=0; for(let i=0;i<=ni;i++){if(typeof q.chain[i]==='object')k++;} return k;}
+l1el.addEventListener('click',e=>{
+  const ex=e.target.closest('[data-ex]');
+  if(ex){document.getElementById('ex'+ex.dataset.ex).classList.toggle('show');return;}
+  const c=e.target.closest('.chip'); if(!c||c.disabled) return;
+  const q=+c.dataset.q, n=+c.dataset.n, o=+c.dataset.o;
+  const item=L1[q].chain[n];
+  if(o===item.ans){
+    const node=document.getElementById(`b${q}_${n}`);
+    node.textContent=item.opts[o]; node.classList.remove('blank'); node.classList.add('solved');
+    document.getElementById(`c${q}_${n}`).remove();
+    if(!document.querySelector(`#l1q${q} .choices`)) document.getElementById('ex'+q).classList.add('show');
+  }else{
+    c.classList.add('wrong'); c.disabled=true;
+    setTimeout(()=>c.classList.remove('wrong'),400);
+  }
+});
+
+/* ---------- L2 분기 연상 ---------- */
+/* dir: 'up' | 'down' | 'neutral' */
+const DIRL={up:'▲ 上昇',down:'▼ 下落',neutral:'〜 中立・不確実'};
+const l2el=document.getElementById('l2list');
+l2el.innerHTML=L2.map((q,qi)=>`
+ <div class="card" data-l2="${qi}">
+  <div class="qhead"><span class="qnum">EVENT ${String(qi+1).padStart(2,'0')}</span><span class="qtitle">${q.t}</span><span class="qtag">${q.tag}</span></div>
+  <div class="assets">${q.a.map((a,ai)=>`
+   <div class="arow" data-ai="${ai}">
+    <span class="aname">${a.n}</span>
+    <span class="dirbtns">
+     <button class="dbtn" data-d="up">▲</button>
+     <button class="dbtn" data-d="down">▼</button>
+     <button class="dbtn" data-d="neutral">〜</button>
+    </span>
+    <div class="averdict" id="v${qi}_${ai}"></div>
+   </div>`).join('')}
+  </div>
+  <button class="primary" data-check="${qi}" disabled>模範解答と照合</button>
+  <div class="scoreline" id="s${qi}"></div>
+ </div>`).join('');
+const l2pick={};
+l2el.addEventListener('click',e=>{
+  const d=e.target.closest('.dbtn');
+  if(d){
+    const card=d.closest('[data-l2]'), qi=+card.dataset.l2;
+    const row=d.closest('.arow'), ai=+row.dataset.ai;
+    row.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('selU','selD','selN'));
+    d.classList.add(d.dataset.d==='up'?'selU':d.dataset.d==='down'?'selD':'selN');
+    (l2pick[qi]=l2pick[qi]||{})[ai]=d.dataset.d;
+    if(Object.keys(l2pick[qi]).length===L2[qi].a.length) card.querySelector('[data-check]').disabled=false;
+    return;
+  }
+  const ck=e.target.closest('[data-check]');
+  if(ck && !ck.disabled){
+    const qi=+ck.dataset.check; let score=0;
+    L2[qi].a.forEach((a,ai)=>{
+      const mine=l2pick[qi][ai], ok=mine===a.d; if(ok)score++;
+      const v=document.getElementById(`v${qi}_${ai}`);
+      v.innerHTML=`<span class="mark ${ok?'ok':'ng'}">${ok?'○ 一致':'× 不一致'}</span> — 模範解答: <b>${DIRL[a.d]}</b> · ${a.r}`;
+      v.classList.add('show');
+    });
+    const s=document.getElementById(`s${qi}`);
+    s.textContent=`SCORE ${score} / ${L2[qi].a.length}` + (score===L2[qi].a.length?'  — 完璧':'  — 不一致項目の「理由」を声に出して説明してみること');
+    s.classList.add('show');
+    ck.disabled=true;
+  }
+});
+
+/* ---------- L3 역사 리플레이 ---------- */
+const l3el=document.getElementById('l3list');
+l3el.innerHTML=L3.map((q,qi)=>`
+ <div class="card" data-l3="${qi}">
+  <span class="rdate">${q.d}</span>
+  <div class="qhead"><span class="qtitle">${q.t}</span><span class="qtag">${q.tag}</span></div>
+  <div class="situ"><span class="slabel">当時の情報 — その時点で分かっていたこと</span>${q.s}</div>
+  <div class="assets">${q.a.map((a,ai)=>`
+   <div class="arow" data-ai="${ai}">
+    <span class="aname">${a.n}</span>
+    <span class="dirbtns">
+     <button class="dbtn" data-d="up">▲</button>
+     <button class="dbtn" data-d="down">▼</button>
+    </span>
+    <div class="averdict" id="rv${qi}_${ai}"></div>
+   </div>`).join('')}
+  </div>
+  <textarea class="mychain" id="mc${qi}" placeholder="自分の連想チェーンを先に書く(例: 事件 → 1次 → 2次 → 3次)。書いてから結果を開いてこそ訓練になる。"></textarea>
+  <button class="primary" data-open="${qi}">実際の結果を開く</button>
+  <div class="outcome" id="oc${qi}">
+   <div class="obox"><span class="olabel">実際の結果 — 実際に起きたこと</span>${q.o}</div>
+   <div class="lesson"><b>教訓</b> — ${q.l}</div>
+  </div>
+ </div>`).join('');
+const l3pick={};
+l3el.addEventListener('click',e=>{
+  const d=e.target.closest('.dbtn');
+  if(d){
+    const card=d.closest('[data-l3]'), qi=+card.dataset.l3;
+    const row=d.closest('.arow'), ai=+row.dataset.ai;
+    row.querySelectorAll('.dbtn').forEach(b=>b.classList.remove('selU','selD'));
+    d.classList.add(d.dataset.d==='up'?'selU':'selD');
+    (l3pick[qi]=l3pick[qi]||{})[ai]=d.dataset.d;
+    return;
+  }
+  const op=e.target.closest('[data-open]');
+  if(op){
+    const qi=+op.dataset.open;
+    L3[qi].a.forEach((a,ai)=>{
+      const mine=(l3pick[qi]||{})[ai];
+      const v=document.getElementById(`rv${qi}_${ai}`);
+      const ok=mine===a.d;
+      v.innerHTML= mine
+        ? `<span class="mark ${ok?'ok':'ng'}">${ok?'○ 的中':'× 外れ'}</span> — 実際: <b>${a.d==='up'?'▲ 上昇':'▼ 下落'}</b>`
+        : `実際: <b>${a.d==='up'?'▲ 上昇':'▼ 下落'}</b> (予測未選択)`;
+      v.classList.add('show');
+    });
+    document.getElementById('oc'+qi).classList.add('show');
+    op.disabled=true;
+  }
+});
+
+/* ---------- L4 데일리 일지 ---------- */
+const JKEY='renso_journal_jp_v1';
+function jload(){ try{ return JSON.parse(localStorage.getItem(JKEY))||[] }catch(e){ return [] } }
+function jsave(list){ try{ localStorage.setItem(JKEY,JSON.stringify(list)) }catch(e){} }
+function fmtd(iso){ const d=new Date(iso); return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}` }
+const STL={pending:'検証待ち',hit:'的中',partial:'部分的中',miss:'外れ'};
+function jrender(){
+  const list=jload();
+  const done=list.filter(x=>x.status!=='pending');
+  const hits=list.filter(x=>x.status==='hit').length;
+  document.getElementById('jstats').innerHTML=`
+   <div class="stat"><div class="sv">${list.length}</div><div class="sk">記録</div></div>
+   <div class="stat"><div class="sv">${done.length}</div><div class="sk">検証済み</div></div>
+   <div class="stat"><div class="sv">${done.length?Math.round(hits/done.length*100)+'%':'—'}</div><div class="sk">的中率(完全的中)</div></div>`;
+  const el=document.getElementById('jlist');
+  if(!list.length){ el.innerHTML='<p class="emptyj">まだ記録がない。今日見たニュース一つから始めよう — チェーンは短くてもいい。</p>'; return; }
+  el.innerHTML=list.slice().reverse().map(x=>`
+   <div class="card jentry ${x.status}">
+    <div class="jtop"><span class="jdate">${fmtd(x.at)}</span><span class="jbadge ${x.status}">${STL[x.status]}</span>
+     <span class="jdate">${x.target} · ${x.dir==='up'?'▲上昇':x.dir==='down'?'▼下落':'〜レンジ'} · ${x.horizon} · ${x.conf}</span></div>
+    <div class="jnews">${esc(x.news)}</div>
+    <div class="jchain">${esc(x.chain)}</div>
+    ${x.status==='pending'
+      ? `<div class="jverify"><input type="text" class="vnote" id="vn${x.id}" placeholder="検証メモ — チェーンのどの節が合い、どこが外れたか(任意)" style="flex:1 1 240px;font:inherit;font-size:13px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:5px 10px">
+         <button class="vbtn h" data-v="hit" data-id="${x.id}">的中</button>
+         <button class="vbtn" data-v="partial" data-id="${x.id}">部分的中</button>
+         <button class="vbtn m" data-v="miss" data-id="${x.id}">外れ</button>
+         <button class="jdel" data-del="${x.id}">削除</button></div>`
+      : `${x.note?`<div class="jresult">${esc(x.note)}</div>`:''}
+         <div class="jverify"><span class="jdate">検証日 ${x.vAt?fmtd(x.vAt):''}</span><button class="jdel" data-del="${x.id}">削除</button></div>`}
+   </div>`).join('');
+}
+function esc(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
+document.getElementById('jadd').addEventListener('click',()=>{
+  const news=document.getElementById('jnews').value.trim();
+  const chain=document.getElementById('jchain').value.trim();
+  if(!news){ document.getElementById('jnews').focus(); return; }
+  const list=jload();
+  list.push({id:Date.now()+''+Math.floor(Math.random()*1e4), at:new Date().toISOString(),
+    news, chain, target:document.getElementById('jtarget').value.trim()||'—',
+    dir:document.getElementById('jdir').value, horizon:document.getElementById('jhorizon').value,
+    conf:document.getElementById('jconf').value, status:'pending', note:'', vAt:null});
+  jsave(list);
+  ['jnews','jchain','jtarget'].forEach(id=>document.getElementById(id).value='');
+  jrender();
+});
+document.getElementById('jlist').addEventListener('click',e=>{
+  const v=e.target.closest('[data-v]');
+  if(v){
+    const list=jload(); const it=list.find(x=>x.id===v.dataset.id); if(!it) return;
+    const noteEl=document.getElementById('vn'+it.id);
+    it.status=v.dataset.v; it.note=noteEl?noteEl.value.trim():''; it.vAt=new Date().toISOString();
+    jsave(list); jrender(); return;
+  }
+  const del=e.target.closest('[data-del]');
+  if(del){ jsave(jload().filter(x=>x.id!==del.dataset.del)); jrender(); }
+});
+jrender();
+
+</script>
+
+</body>
+</html>
