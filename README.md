@@ -1,4 +1,4 @@
-# 연상 도장 (Investment Study)
+# 연상 사고 개발 (Investment Study)
 
 주식투자 "연상게임"(2차적 사고) 자습 드릴.
 
