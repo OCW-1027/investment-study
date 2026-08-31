@@ -156,6 +156,21 @@ table.sched th{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spa
 table.sched td{padding:7px 12px; border-bottom:1px solid var(--line); vertical-align:top}
 table.sched td:first-child{font-weight:500; white-space:nowrap}
 table.sched td.mono{font-family:'IBM Plex Mono',monospace; font-size:12.5px; white-space:nowrap; font-variant-numeric:tabular-nums}
+.bsub{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; align-items:center}
+.mchip{appearance:none; font-family:'IBM Plex Mono',monospace; font-size:12.5px; border:1.5px solid var(--line); background:var(--surface); color:var(--muted); border-radius:999px; padding:4px 13px; cursor:pointer}
+.mchip:hover{border-color:var(--accent); color:var(--accent)}
+.mchip:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.mchip.on{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700}
+.mchip.memoBtn{margin-left:auto}
+.mchip.memoOn{background:var(--warn-soft); border-color:var(--warn); color:var(--warn); font-weight:700}
+.bstar{appearance:none; background:none; border:none; cursor:pointer; font-size:18px; color:var(--muted); float:right; margin-left:10px; line-height:1; padding:2px}
+.bstar:hover{color:var(--warn)} .bstar.on{color:var(--warn)}
+.bstar:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+.memonote{width:100%; min-height:48px; margin-top:12px; font:inherit; font-size:13.5px; background:var(--surface2); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 11px; resize:vertical}
+.memonote:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.memometa{display:flex; gap:10px; align-items:center; margin-top:8px; font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace}
+.memodel{margin-left:auto; background:none; border:none; color:var(--muted); font-size:12px; text-decoration:underline; cursor:pointer}
+.memodel:hover{color:var(--bad)}
 /* map */
 .mapgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px}
 details.mcard{background:var(--surface); border:1px solid var(--line); border-radius:13px; box-shadow:var(--shadow); overflow:hidden}
@@ -247,6 +262,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
   <p class="lede">毎営業日の朝(東京市場の寄り付き前)に自動更新される実戦連想の事例集。
   <b>ニュース → 連想チェーン → 可能性 → 追い風/逆風の銘柄 → チェックポイント</b>の形式で、連想ゲームが実際にどう使われるかが毎日積み上がります。
   読む前に見出しだけを見て自分でチェーンを描き、それから照合すると訓練効果は倍増します。
+  月別に整理され、各カードの☆を押すと<b>私の連想メモ</b>に保存して自分のコメントを添えておけます(このブラウザに保存)。
   学習用のシナリオ分析であり、売買の推奨ではありません。</p>
   <div id="briefwrap"></div>
 </section>
@@ -481,7 +497,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
 <script>
 /* ---------- 今日の連想ブリーフィング ---------- */
 const DAILY=[
-/* DAILY_DATA:v1 — 自動更新マーカー。新しい日付の項目はこの行の直下に追加し、31日を超えた分は配列末尾から削除する。 */
+/* DAILY_DATA:v1 — 自動更新マーカー。新しい日付の項目はこの行の直下に追加する。削除しない(月別に表示される)。 */
  {date:'2026-08-31',wd:'月',items:[
   {tag:'ジャクソンホール · タカ派サプライズ',
    news:'ウォーシュFRB議長はジャクソンホール初講演で「夏場のインフレ鈍化は根本的な改善とは言えない」と述べ、高インフレ持続なら追加引き締めの可能性を示唆 — FedWatchの9月利上げ確率は35.4%から59.5%へ急上昇した。米10年債4.72%(+0.04%)、ダウ53,560(ほぼ横ばい)・S&P -0.2%・ナスダック -0.5%(26,402)と金利上昇を消化しつつ下落',
@@ -835,14 +851,12 @@ tabs.addEventListener('click',e=>{
 const U='<span class="updn u">▲</span>', D='<span class="updn d">▼</span>';
 
 /* ---------- 오늘의 연상 브리핑 ---------- */
-function brender(){
-  const el=document.getElementById('briefwrap');
-  el.innerHTML=DAILY.map(d=>{
-    const[y,m,dd]=d.date.split('-');
-    return `<div class="bday"><span class="bd">${m}.${dd}</span><span class="bw">${y} · ${d.wd}曜日</span></div>`+
-    d.items.map(it=>`
-    <div class="card bitem">
-      <span class="btagline">${it.tag}</span>
+const MKEY='renso_memos_jp_v1';
+function mload(){ try{ return JSON.parse(localStorage.getItem(MKEY))||[] }catch(e){ return [] } }
+function msave(l){ try{ localStorage.setItem(MKEY,JSON.stringify(l)) }catch(e){} }
+let briefView='list', briefMonth=null;
+function bcore(it){
+  return `<span class="btagline">${it.tag}</span>
       <div class="bnews">${it.news}</div>
       <div class="bchain"><span class="blab">連想チェーン</span>${it.chain}</div>
       <div class="bscen"><span class="blab">可能性・シナリオ</span>${it.scen}</div>
@@ -850,10 +864,59 @@ function brender(){
         <div class="bcol good"><span class="bclab">追い風(恩恵の方向)</span><ul>${it.good.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="bcol badc"><span class="bclab">逆風(圧迫の方向)</span><ul>${it.bad.map(x=>`<li>${x}</li>`).join('')}</ul></div>
       </div>
-      <div class="bwatch"><b>CHECK</b> — ${it.watch}</div>
-    </div>`).join('');
-  }).join('');
+      <div class="bwatch"><b>CHECK</b> — ${it.watch}</div>`;
 }
+function brender(){
+  const el=document.getElementById('briefwrap');
+  const memos=mload();
+  const months=[...new Set(DAILY.map(d=>d.date.slice(0,7)))].sort().reverse();
+  if(!briefMonth||!months.includes(briefMonth)) briefMonth=months[0];
+  let h='<div class="bsub">'+months.map(m=>`<button class="mchip${briefView==='list'&&m===briefMonth?' on':''}" data-bm="${m}">${m.replace('-','.')}</button>`).join('')
+   +`<button class="mchip memoBtn${briefView==='memo'?' memoOn':''}" data-bmemo>★ 私の連想メモ (${memos.length})</button></div>`;
+  if(briefView==='memo'){
+    h+= memos.length? memos.slice().reverse().map(m=>`
+     <div class="card bitem">${bcore(m.item)}
+      <textarea class="memonote" data-note="${m.id}" placeholder="自分のメモ — なぜ保存したか、どのチェーンを記憶しておくか">${esc(m.note||'')}</textarea>
+      <div class="memometa"><span>${m.date} · 保存 ${fmtd(m.savedAt)}</span><span id="mh${m.id}"></span><button class="memodel" data-mdel="${m.id}">削除</button></div>
+     </div>`).join('')
+     : '<p class="emptyj">保存されたメモがない。ブリーフィングカードの☆を押すと、ここに自分の連想メモとして積み上がる。</p>';
+  } else {
+    const list=DAILY.filter(d=>d.date.slice(0,7)===briefMonth);
+    h+=list.map(d=>{
+      const[y,mm,dd]=d.date.split('-');
+      return `<div class="bday"><span class="bd">${mm}.${dd}</span><span class="bw">${y} · ${d.wd}曜日</span></div>`+
+      d.items.map((it,ii)=>{
+        const id=d.date+'_'+ii, st=memos.some(x=>x.id===id);
+        return `<div class="card bitem"><button class="bstar${st?' on':''}" data-star="${id}" title="私の連想メモに保存">${st?'★':'☆'}</button>${bcore(it)}</div>`;
+      }).join('');
+    }).join('');
+  }
+  el.innerHTML=h;
+}
+document.getElementById('briefwrap').addEventListener('click',e=>{
+  const bm=e.target.closest('[data-bm]');
+  if(bm){ briefView='list'; briefMonth=bm.dataset.bm; brender(); return; }
+  if(e.target.closest('[data-bmemo]')){ briefView=briefView==='memo'?'list':'memo'; brender(); return; }
+  const st=e.target.closest('[data-star]');
+  if(st){
+    const id=st.dataset.star; let memos=mload();
+    if(memos.some(x=>x.id===id)) memos=memos.filter(x=>x.id!==id);
+    else{
+      const p=id.split('_'), day=DAILY.find(d=>d.date===p[0]), it=day&&day.items[+p[1]];
+      if(it) memos.push({id, date:p[0], savedAt:new Date().toISOString(), note:'', item:it});
+    }
+    msave(memos); brender(); return;
+  }
+  const md=e.target.closest('[data-mdel]');
+  if(md){ msave(mload().filter(x=>x.id!==md.dataset.mdel)); brender(); return; }
+});
+document.getElementById('briefwrap').addEventListener('input',e=>{
+  const n=e.target.closest('[data-note]'); if(!n) return;
+  const memos=mload(), it=memos.find(x=>x.id===n.dataset.note); if(!it) return;
+  it.note=n.value; msave(memos);
+  const h=document.getElementById('mh'+it.id);
+  if(h){ h.textContent='保存済み'; clearTimeout(h._t); h._t=setTimeout(()=>{h.textContent='';},1200); }
+});
 brender();
 
 /* ---------- 연상 지도 ---------- */

@@ -156,6 +156,21 @@ table.sched th{font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spa
 table.sched td{padding:7px 12px; border-bottom:1px solid var(--line); vertical-align:top}
 table.sched td:first-child{font-weight:500; white-space:nowrap}
 table.sched td.mono{font-family:'IBM Plex Mono',monospace; font-size:12.5px; white-space:nowrap; font-variant-numeric:tabular-nums}
+.bsub{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; align-items:center}
+.mchip{appearance:none; font-family:'IBM Plex Mono',monospace; font-size:12.5px; border:1.5px solid var(--line); background:var(--surface); color:var(--muted); border-radius:999px; padding:4px 13px; cursor:pointer}
+.mchip:hover{border-color:var(--accent); color:var(--accent)}
+.mchip:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.mchip.on{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700}
+.mchip.memoBtn{margin-left:auto}
+.mchip.memoOn{background:var(--warn-soft); border-color:var(--warn); color:var(--warn); font-weight:700}
+.bstar{appearance:none; background:none; border:none; cursor:pointer; font-size:18px; color:var(--muted); float:right; margin-left:10px; line-height:1; padding:2px}
+.bstar:hover{color:var(--warn)} .bstar.on{color:var(--warn)}
+.bstar:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:6px}
+.memonote{width:100%; min-height:48px; margin-top:12px; font:inherit; font-size:13.5px; background:var(--surface2); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:8px 11px; resize:vertical}
+.memonote:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.memometa{display:flex; gap:10px; align-items:center; margin-top:8px; font-size:12.5px; color:var(--muted); font-family:'IBM Plex Mono',monospace}
+.memodel{margin-left:auto; background:none; border:none; color:var(--muted); font-size:12px; text-decoration:underline; cursor:pointer}
+.memodel:hover{color:var(--bad)}
 /* map */
 .mapgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px}
 details.mcard{background:var(--surface); border:1px solid var(--line); border-radius:13px; box-shadow:var(--shadow); overflow:hidden}
@@ -247,6 +262,7 @@ footer{margin-top:50px; padding-top:20px; border-top:1px solid var(--line); colo
   <p class="lede">매 영업일 아침(도쿄장 개장 전) 자동 업데이트되는 실전 연상 사례집.
   <b>뉴스 → 사슬 → 가능성 → 수혜/압박 종목 → 체크포인트</b>의 형태로, 연상게임이 실제로 어떻게 쓰이는지 매일 쌓입니다.
   브리핑을 읽기 전에 헤드라인만 보고 스스로 사슬을 그려본 뒤 대조하면 훈련 효과가 배가됩니다.
+  월별로 정리되며, 각 카드의 ☆를 누르면 <b>나의 연상 메모</b>에 저장하고 내 코멘트를 덧붙여 둘 수 있습니다(이 브라우저에 저장).
   학습용 시나리오 분석이며 매수·매도 추천이 아닙니다.</p>
   <div id="briefwrap"></div>
 </section>
@@ -491,7 +507,7 @@ const U='<span class="updn u">▲</span>', D='<span class="updn d">▼</span>';
 
 /* ---------- 오늘의 연상 브리핑 ---------- */
 const DAILY=[
-/* DAILY_DATA:v1 — 자동 업데이트 마커. 새 날짜 항목은 이 줄 바로 아래에 추가하고, 31일 초과분은 배열 끝에서 삭제한다. */
+/* DAILY_DATA:v1 — 자동 업데이트 마커. 새 날짜 항목은 이 줄 바로 아래에 추가한다. 삭제하지 않는다(월별로 표시됨). */
  {date:'2026-08-31',wd:'월',items:[
   {tag:'잭슨홀 · 매파 서프라이즈',
    news:'워시 FRB 의장이 잭슨홀 데뷔 강연에서 "여름의 인플레 둔화는 근본적 개선이라 부를 수 없다"며 고인플레 지속 시 추가 긴축 가능성을 시사 — FedWatch의 9월 인상 확률이 35.4%에서 59.5%로 급등했다. 미 10년물 4.72%(+0.04%), 다우 53,560(보합)·S&P -0.2%·나스닥 -0.5%(26,402)로 금리 상승을 소화하며 하락',
@@ -638,14 +654,12 @@ const DAILY=[
    watch:'중앙은행 금 매수 통계 · 달러 인덱스'},
  ]},
 ];
-function brender(){
-  const el=document.getElementById('briefwrap');
-  el.innerHTML=DAILY.map(d=>{
-    const[y,m,dd]=d.date.split('-');
-    return `<div class="bday"><span class="bd">${m}.${dd}</span><span class="bw">${y} · ${d.wd}요일</span></div>`+
-    d.items.map(it=>`
-    <div class="card bitem">
-      <span class="btagline">${it.tag}</span>
+const MKEY='renso_memos_v1';
+function mload(){ try{ return JSON.parse(localStorage.getItem(MKEY))||[] }catch(e){ return [] } }
+function msave(l){ try{ localStorage.setItem(MKEY,JSON.stringify(l)) }catch(e){} }
+let briefView='list', briefMonth=null;
+function bcore(it){
+  return `<span class="btagline">${it.tag}</span>
       <div class="bnews">${it.news}</div>
       <div class="bchain"><span class="blab">연상 사슬</span>${it.chain}</div>
       <div class="bscen"><span class="blab">가능성 · 시나리오</span>${it.scen}</div>
@@ -653,10 +667,59 @@ function brender(){
         <div class="bcol good"><span class="bclab">순풍 (수혜 방향)</span><ul>${it.good.map(x=>`<li>${x}</li>`).join('')}</ul></div>
         <div class="bcol badc"><span class="bclab">역풍 (압박 방향)</span><ul>${it.bad.map(x=>`<li>${x}</li>`).join('')}</ul></div>
       </div>
-      <div class="bwatch"><b>CHECK</b> — ${it.watch}</div>
-    </div>`).join('');
-  }).join('');
+      <div class="bwatch"><b>CHECK</b> — ${it.watch}</div>`;
 }
+function brender(){
+  const el=document.getElementById('briefwrap');
+  const memos=mload();
+  const months=[...new Set(DAILY.map(d=>d.date.slice(0,7)))].sort().reverse();
+  if(!briefMonth||!months.includes(briefMonth)) briefMonth=months[0];
+  let h='<div class="bsub">'+months.map(m=>`<button class="mchip${briefView==='list'&&m===briefMonth?' on':''}" data-bm="${m}">${m.replace('-','.')}</button>`).join('')
+   +`<button class="mchip memoBtn${briefView==='memo'?' memoOn':''}" data-bmemo>★ 나의 연상 메모 (${memos.length})</button></div>`;
+  if(briefView==='memo'){
+    h+= memos.length? memos.slice().reverse().map(m=>`
+     <div class="card bitem">${bcore(m.item)}
+      <textarea class="memonote" data-note="${m.id}" placeholder="나의 메모 — 왜 저장했나, 어떤 사슬을 기억해 둘 것인가">${esc(m.note||'')}</textarea>
+      <div class="memometa"><span>${m.date} · 저장 ${fmtd(m.savedAt)}</span><span id="mh${m.id}"></span><button class="memodel" data-mdel="${m.id}">삭제</button></div>
+     </div>`).join('')
+     : '<p class="emptyj">저장된 메모가 없다. 브리핑 카드의 ☆를 누르면 이곳에 나만의 연상 메모로 쌓인다.</p>';
+  } else {
+    const list=DAILY.filter(d=>d.date.slice(0,7)===briefMonth);
+    h+=list.map(d=>{
+      const[y,mm,dd]=d.date.split('-');
+      return `<div class="bday"><span class="bd">${mm}.${dd}</span><span class="bw">${y} · ${d.wd}요일</span></div>`+
+      d.items.map((it,ii)=>{
+        const id=d.date+'_'+ii, st=memos.some(x=>x.id===id);
+        return `<div class="card bitem"><button class="bstar${st?' on':''}" data-star="${id}" title="나의 연상 메모에 저장">${st?'★':'☆'}</button>${bcore(it)}</div>`;
+      }).join('');
+    }).join('');
+  }
+  el.innerHTML=h;
+}
+document.getElementById('briefwrap').addEventListener('click',e=>{
+  const bm=e.target.closest('[data-bm]');
+  if(bm){ briefView='list'; briefMonth=bm.dataset.bm; brender(); return; }
+  if(e.target.closest('[data-bmemo]')){ briefView=briefView==='memo'?'list':'memo'; brender(); return; }
+  const st=e.target.closest('[data-star]');
+  if(st){
+    const id=st.dataset.star; let memos=mload();
+    if(memos.some(x=>x.id===id)) memos=memos.filter(x=>x.id!==id);
+    else{
+      const p=id.split('_'), day=DAILY.find(d=>d.date===p[0]), it=day&&day.items[+p[1]];
+      if(it) memos.push({id, date:p[0], savedAt:new Date().toISOString(), note:'', item:it});
+    }
+    msave(memos); brender(); return;
+  }
+  const md=e.target.closest('[data-mdel]');
+  if(md){ msave(mload().filter(x=>x.id!==md.dataset.mdel)); brender(); return; }
+});
+document.getElementById('briefwrap').addEventListener('input',e=>{
+  const n=e.target.closest('[data-note]'); if(!n) return;
+  const memos=mload(), it=memos.find(x=>x.id===n.dataset.note); if(!it) return;
+  it.note=n.value; msave(memos);
+  const h=document.getElementById('mh'+it.id);
+  if(h){ h.textContent='저장됨'; clearTimeout(h._t); h._t=setTimeout(()=>{h.textContent='';},1200); }
+});
 brender();
 
 /* ---------- 연상 지도 ---------- */
